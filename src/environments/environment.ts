@@ -3,7 +3,13 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  arrowhead: {
+    host: 'http://137.204.57.93',
+    port: 8443,
+    harvester: 'dr-harvester',
+    networkWT: 'network-web-thing',
+  },
 };
 
 /*
