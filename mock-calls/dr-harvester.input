@@ -1,0 +1,51 @@
+ "devId": "string",
+ "harvId": "string",
+
+Eletrical parameters:
+ "batV": 0.0,
+ "devAvgI": 0.0,
+ "Vload": 0.0,
+
+or
+
+ "Vload": 0.0,
+ "duty": 0,
+ "activeI": 0.0,
+ "lowpwrI": 0.0,
+ 
+"batSOC": 0.0, or  "batV": 0.0,
+
+Energy HArvvester solution:
+ "phIrr": 0.0,
+
+- Non-required fields: 
+ "thThot": 0,
+ "thTcold": 0,
+ "thGrad": 0,
+ "vibAcc": 0,
+ "vibFreq": 0
+
+Example: 
+{
+	"devId": "GasSensor",
+	"harvId": "SolarLightLoad",
+	
+	"lowpwrI": 1,
+	"activeI": 20,
+	"duty": 20,
+	"Vload": 3.3,
+    "devAvgI": null,
+	"batSOC": null,
+	"batV": 3.82,
+	
+	"phIrr": 700,
+	"thThot": null,
+	"thTcold": null,
+	"thGrad": null,
+	"vibAcc": null,
+	"vibFreq": null
+}
+"activeI": 1100
+(activeI * dutyCicle) + (lowpwrI * (1 - dutyCicle)) = devAvgI
+ "Vload": 3.3,
+
