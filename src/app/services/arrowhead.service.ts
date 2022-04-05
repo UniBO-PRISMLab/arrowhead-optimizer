@@ -1,61 +1,58 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, map, retry } from 'rxjs/operators';
+
 import { environment } from 'src/environments/environment';
-import {
-  ArrowheadServiceRegistry,
-  IArrowheadServiceRegistry,
-} from '../model/ah-service-registry.model';
+import { IArrowheadAllReply } from '../model/arrowhead/arrowheadAllReply.model';
+import { ArrowheadServiceRegistry } from '../model/arrowhead/arrowheadServiceRegistry.class';
+import { IArrowheadServiceRegistry } from '../model/arrowhead/arrowheadServiceRegistry.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArrowheadService {
-  private _arrowheadUrl: string;
-  constructor(private http: HttpClient) {
-    this._arrowheadUrl = `${environment.arrowhead.host}:${environment.arrowhead.port}`;
-  }
+  private static readonly _arrowheadUrl = `${environment.arrowhead.host}:${environment.arrowhead.port}aaa`;
+  constructor(private http: HttpClient) {}
 
-  getAllServices(): Observable<IArrowheadServiceRegistry[]> {
+  getAllServices(): Observable<IArrowheadAllReply> {
     return this.http
-      .get<IArrowheadServiceRegistry[]>(
-        `${this._arrowheadUrl}/serviceregistry/query/all`
+      .get<IArrowheadAllReply>(
+        `${ArrowheadService._arrowheadUrl}/serviceregistry/query/all`
       )
       .pipe(retry(3), catchError(this.handleError));
   }
 
-  getServices(serviceName: string): Observable<ArrowheadServiceRegistry> {
-    return new Observable<ArrowheadServiceRegistry>((observable) => {
-      observable.next(new ArrowheadServiceRegistry());
-    });
+  getService(serviceName: string): Observable<IArrowheadServiceRegistry> {
+    return this.getAllServices().pipe(
+      map(
+        (res: IArrowheadAllReply) =>
+          res.data.filter(
+            (data: IArrowheadServiceRegistry) =>
+              data.provider.systemName === serviceName
+          )[0]
+      )
+    );
   }
 
   getDrHarvester(): Observable<ArrowheadServiceRegistry> {
-    return new Observable<ArrowheadServiceRegistry>((observable) => {
-      observable.next(new ArrowheadServiceRegistry());
-    });
+    return this.getService(environment.arrowhead.harvester);
   }
 
   getNetworkWT(): Observable<ArrowheadServiceRegistry> {
-    return new Observable<ArrowheadServiceRegistry>((observable) => {
-      observable.next(new ArrowheadServiceRegistry());
-    });
+    return this.getService(environment.arrowhead.networkWT);
   }
 
-  private handleError(error: HttpErrorResponse) {
-    if (error.status === 0) console.error('Client-side erro:', error.error);
-    else
-      console.error(`Error status code: ${error.status}, body: ${error.error}`);
+  private handleError(error: HttpErrorResponse | any): Observable<never> {
+    let msg = '';
+    //* This means sintax error (aka wrng url or didn't find the URL) (dont know the type)
+    if (error.code == 12) {
+      console.log(JSON.stringify(error));
+      msg += `sintax error: bad URL - ${ArrowheadService._arrowheadUrl}`;
+    } else if (error.status === 0) msg += `Client-side erro: ${error.error}`;
+    else msg += `Error status code: ${error.status}, body: ${error.error}`;
     return throwError(
-      () =>
-        new Error(
-          `Error fetching data from Arrowhead - ${
-            error.status === 0
-              ? 'Internal error'
-              : `Server error ${error.status} `
-          }`
-        )
+      () => new Error(`Error fetching data from Arrowhead - ${msg}`)
     );
   }
 }
