@@ -12,7 +12,7 @@ import { IArrowheadServiceRegistry } from '../model/arrowhead/arrowheadServiceRe
   providedIn: 'root',
 })
 export class ArrowheadService {
-  private static readonly _arrowheadUrl = `${environment.arrowhead.host}:${environment.arrowhead.port}aaa`;
+  private static readonly _arrowheadUrl = `${environment.arrowhead.host}:${environment.arrowhead.port}`;
   constructor(private http: HttpClient) {}
 
   getAllServices(): Observable<IArrowheadAllReply> {
