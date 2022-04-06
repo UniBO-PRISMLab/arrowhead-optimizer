@@ -3,18 +3,21 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, retry, throwError } from 'rxjs';
 import { IDrHarvesterInput } from '../model/dr-harvester/dr-harvester-input.model';
 import {
-  DrHarvesterOutput,
   IDrHarvesterJob,
   IDrHarvesterOutput,
 } from '../model/dr-harvester/dr-harvester-output.model';
+import { ArrowheadService } from './arrowhead.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DrHarvesterService {
-  private _simulationId: string | undefined;
-  private _drHarvesterUrl: string = 'http://137.204.57.93:7739'; //'http://137.204.143.89:8888';
-  constructor(private http: HttpClient) {}
+  private _drHarvesterUrl: string = '';
+  constructor(private http: HttpClient, private _arrowhead: ArrowheadService) {
+    this._arrowhead.getDrHarvester().subscribe((service) => {
+      this._drHarvesterUrl = `${service.provider.address}:${service.provider.port}`;
+    });
+  }
 
   get drHarvesterUrl(): string {
     return this._drHarvesterUrl;
@@ -23,24 +26,18 @@ export class DrHarvesterService {
     this._drHarvesterUrl = url;
   }
   startSimulation(input: IDrHarvesterInput): Observable<IDrHarvesterJob> {
-    const reply = this.http
+    return this.http
       .post<IDrHarvesterJob>(
         `${this._drHarvesterUrl}/harvester/simulation`,
         input
       )
       .pipe(catchError(this.handleError));
-    reply.subscribe((job: IDrHarvesterJob) => {
-      console.log(job);
-      this._simulationId = job.jobId;
-    });
-
-    return reply;
   }
 
-  getSimulation(): Observable<IDrHarvesterOutput> {
+  getSimulation(simulationId: string): Observable<IDrHarvesterOutput> {
     return this.http
       .get<IDrHarvesterOutput>(
-        `${this._drHarvesterUrl}/harvester/simulation/${this._simulationId}`
+        `${this._drHarvesterUrl}/harvester/simulation/${simulationId}`
       )
       .pipe(retry(3), catchError(this.handleError));
   }
@@ -59,14 +56,18 @@ export class DrHarvesterService {
         'type',
         'name',
       ])}`;
-    else msg += `Error status code: ${error.status}, body: ${error.error}`;
+    else
+      msg += `Error status code: ${error.status}, body: ${JSON.stringify(
+        error.error
+      )}`;
     return throwError(
-      () => new Error(`Error fetching data from DrHarvester - ${msg}`)
+      () => new Error(`Fetching data from DrHarvester - ${msg}`)
     );
   }
 
   public simulationControl = new Observable((observer) => {
-    const checkSimulation = (func: any) => this.getSimulation().subscribe(func);
+    const checkSimulation = (func: any) =>
+      this.getSimulation('').subscribe(func);
 
     const controLoop = (res: IDrHarvesterOutput) => {
       console.log('control loop');
