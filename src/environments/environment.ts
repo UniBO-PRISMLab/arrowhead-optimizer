@@ -10,6 +10,7 @@ export const environment = {
     harvester: 'dr-harvester',
     networkWT: 'network-web-thing',
   },
+  poolingTime: 15,
 };
 
 /*
