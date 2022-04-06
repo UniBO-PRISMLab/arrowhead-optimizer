@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { catchError, ignoreElements, Observable, of } from 'rxjs';
 
 @Component({
@@ -7,6 +7,8 @@ import { catchError, ignoreElements, Observable, of } from 'rxjs';
 })
 export class ObservableHandlerComponent<T> implements OnInit {
   @Input() observable$: Observable<T>;
+  @Output() error = new EventEmitter<Error>();
+  @Output() data = new EventEmitter<T>();
   public observableError$: Observable<Error> | undefined;
 
   constructor() {
@@ -19,5 +21,7 @@ export class ObservableHandlerComponent<T> implements OnInit {
       ignoreElements(),
       catchError((err: Error): Observable<Error> => of(err))
     );
+    this.observableError$.subscribe((error) => this.error.emit(error));
+    this.observable$.subscribe((data) => this.data.emit(data));
   }
 }
