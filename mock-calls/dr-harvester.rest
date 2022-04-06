@@ -22,10 +22,11 @@ Content-Type: application/json
 }
 
 #####
-GET  http://137.204.57.93:7739/harvester/simulation/15edd166-3ccf-4bf4-b0db-57831137c66a
+GET  http://137.204.57.93:7739/harvester/simulation/eb20a801-85e4-4445-8a5d-88a510b80be5
 
 #####
-
+GET  http://137.204.57.93:7739/harvester/simulation/eb20a801-85e4-4445-8a5d-88a510b80be1
+####
 {
   "terminated": true,
   "result": {
@@ -39,3 +40,29 @@ GET  http://137.204.57.93:7739/harvester/simulation/15edd166-3ccf-4bf4-b0db-5783
     "dSOCrate": -0.938
   }
 }
+
+### create DrHarvester arrowhead service
+POST http://137.204.57.93:8443/serviceregistry/register
+Content-Type: application/json
+
+{
+   "endOfValidity":"2031-01-01 23:59:59",
+   "interfaces":[
+      "HTTPS-SECURE-JSON"
+   ],
+   "providerSystem":{
+      "address":"http://137.204.57.93",
+      "port": 7739,
+      "systemName":"dr-harvester"
+   },
+   "secure":"NOT_SECURE",
+   "serviceDefinition":"dr-harvester",
+   "serviceUri":"harvester",
+   "version":0
+}
+####
+GET http://137.204.57.93:8443/serviceregistry/mgmt/2091
+
+###
+DELETE http://137.204.57.93:8443/serviceregistry/mgmt/3061
+Accept: application/json
