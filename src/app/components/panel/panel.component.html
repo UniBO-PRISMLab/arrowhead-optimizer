@@ -1,0 +1,13 @@
+<mat-accordion class="panel">
+  <div *ngFor="let thing$ of things">
+    <mat-expansion-panel *ngIf="thing$ | async as thing" class="panel">
+      <mat-expansion-panel-header>
+        <mat-panel-title> SHM Sensors </mat-panel-title>
+        <mat-panel-description>
+          sensors monitorings a bridge
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+          <app-test-thing [thing]="thing"></app-test-thing>
+    </mat-expansion-panel>
+  </div>
+</mat-accordion>

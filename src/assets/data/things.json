@@ -1,0 +1,18 @@
+{
+  "devId": "Accelerometer:1",
+  "harvId": "SolarLightLoad",
+
+	"lowpwrI": 400,
+	"activeI": 715,
+	"duty":20,
+	"Vload": 5,
+  "devAvgI": null,
+	"batSOC": null,
+	"batV": 3.28,
+	"phIrr": 700,
+	"thThot": null,
+	"thTcold": null,
+	"thGrad": null,
+	"vibAcc": null,
+	"vibFreq": null
+}

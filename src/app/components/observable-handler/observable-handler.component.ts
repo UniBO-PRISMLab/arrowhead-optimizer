@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { catchError, ignoreElements, Observable, of } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 
 @Component({
   selector: 'observable-handlers',
@@ -7,6 +7,7 @@ import { catchError, ignoreElements, Observable, of } from 'rxjs';
 })
 export class ObservableHandlerComponent<T> implements OnInit {
   @Input() observable$: Observable<T>;
+  @Input() show: boolean = true;
   @Output() error = new EventEmitter<Error>();
   @Output() data = new EventEmitter<T>();
   public observableError$: Observable<Error> | undefined;
@@ -17,11 +18,17 @@ export class ObservableHandlerComponent<T> implements OnInit {
 
   ngOnInit(): void {
     //? Maybe pipe and map to clone the array?
-    this.observableError$ = this.observable$.pipe(
+    /*     this.observableError$ = this.observable$.pipe(
       ignoreElements(),
       catchError((err: Error): Observable<Error> => of(err))
-    );
-    this.observableError$.subscribe((error) => this.error.emit(error));
-    this.observable$.subscribe((data) => this.data.emit(data));
+    ); */
+    this.observable$
+      .pipe(
+        catchError((err) => {
+          this.error.emit(err);
+          return throwError(() => new Error(err));
+        })
+      )
+      .subscribe((data) => this.data.emit(data));
   }
 }

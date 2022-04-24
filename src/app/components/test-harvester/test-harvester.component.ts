@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, timer } from 'rxjs';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs';
 import { DrHarvesterInput } from 'src/app/model/dr-harvester/dr-harvester-input.model';
 import {
   IDrHarvesterJob,
@@ -10,33 +10,17 @@ import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-test-harvester',
-  template: `
-    <button (click)="startSimulation()">START SIMULATION</button>
-    <div *ngFor="let simulation of simulations; index as i">
-      <observable-handlers
-        (data)="getSimulationResult(i, $event)"
-        (error)="handleError($event)"
-        [observable$]="simulation.job$"
-      ></observable-handlers>
-      <observable-handlers
-        *ngIf="simulation.simulation$; else simulationRunning"
-        [observable$]="simulation.simulation$"
-        (data)="setSimulationResult($event, i)"
-      ></observable-handlers>
-
-      <ng-template #simulationRunning>
-        <div *ngIf="simulation.jobId">
-          Simulation is still running. Next call at
-          <app-timer [time]="poolingTime" (finish)="callAgain(i)"></app-timer>
-        </div>
-      </ng-template>
-    </div>
-  `,
+  templateUrl: 'test-harvester.component.html',
+  styleUrls: ['./test-harvester.component.css'],
 })
 export class TestHarvesterComponent implements OnInit {
   public simulations: ISimulation[] = [];
   public drHarvesterInput: DrHarvesterInput = new DrHarvesterInput();
   public poolingTime: number = environment.poolingTime;
+  @Output() error = new EventEmitter<Error>();
+  @Output('simulation') result = new EventEmitter<IDrHarvesterOutput>();
+  simulationError: boolean[] = [false];
+
   constructor(private _drHarvesterService: DrHarvesterService) {}
 
   public startSimulation() {
@@ -45,37 +29,49 @@ export class TestHarvesterComponent implements OnInit {
       input: new DrHarvesterInput(),
     });
   }
+
+  public restartSimulation(index: number = 0) {
+    this.simulations[index] = {
+      job$: this._drHarvesterService.startSimulation(new DrHarvesterInput()),
+      input: new DrHarvesterInput(),
+    };
+  }
   ngOnInit(): void {}
-  handleError(error: Error): void {
-    console.log('>>>>>>>>>>ERRO<<<<<<<<<<<');
-    console.log(error);
+
+  handleError(error: Error, index: number = 0): void {
+    this.simulationError[index] = true;
+    this.error.emit(error);
   }
   getSimulationResult(index: number, data?: IDrHarvesterJob) {
-    if (data) this.simulations[index].jobId = data.jobId;
-
-    this.simulations[index].simulation$ =
-      this._drHarvesterService.getSimulation(
+    if (this.simulationError[index]) this.simulationError[index] = false;
+    if (data) {
+      console.log(data);
+      this.simulations[index].jobId = data.jobId;
+    }
+    if (this.simulations[index].jobId)
+      this.simulations[index].output$ = this._drHarvesterService.getSimulation(
         this.simulations[index].jobId || ''
       );
   }
   setSimulationResult(result: IDrHarvesterOutput, index: number) {
     if (!result.terminated) {
       console.log(
-        `simulation not finished, waiting ${this.poolingTime} and asking again`
+        `simulation ${index} not finished, waiting ${this.poolingTime} and asking again`
       );
-      this.simulations[index].simulation$ = undefined;
+      this.simulations[index].output$ = undefined;
     } else {
+      this.result.emit(result);
       console.log('simulation finished');
     }
   }
 
-  callAgain(index: number) {
+  callAgain(index: number = 0) {
     this.getSimulationResult(index);
   }
 }
 
 export interface ISimulation {
-  simulation$?: Observable<IDrHarvesterOutput>;
+  output$?: Observable<IDrHarvesterOutput>;
   job$: Observable<IDrHarvesterJob>;
   jobId?: string;
   results?: IDrHarvesterOutput;

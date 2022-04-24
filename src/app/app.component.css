@@ -1,0 +1,27 @@
+img {
+  padding: 1px;
+  width: auto;
+  height: 80%;
+  margin: 10px;
+  border-radius: 5px;
+
+  background-color: rgba(255, 255, 255, 0.945)
+}
+
+.color{
+  background: #373737;  /* fallback for old browsers */
+
+  }
+
+.css-selector {
+  background: linear-gradient(222deg, #301bd9, #19c5d7);
+  background-size: 400% 400%;
+
+  animation: AnimationName 12s ease infinite;
+}
+
+@keyframes AnimationName {
+  0%{background-position:0% 59%}
+  50%{background-position:100% 42%}
+  100%{background-position:0% 59%}
+}

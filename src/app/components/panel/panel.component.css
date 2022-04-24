@@ -1,0 +1,10 @@
+.panel {
+  margin: 10px;
+  background-color: #1d1d1d;/* #121212; */
+
+}
+.mat-expansion-panel-header {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+}

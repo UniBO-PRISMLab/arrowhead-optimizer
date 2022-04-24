@@ -1,0 +1,40 @@
+<mat-card class="card">
+  <mat-card-title style="text-align: left">Change Duty Cycle</mat-card-title>
+  <div class="row">
+    <mat-slider
+      thumbLabel
+      matTooltip="Change device Duty Cycle"
+      matTooltipPosition="above"
+      [displayWith]="formatLabel"
+      step="5"
+      min="5"
+      max="100"
+      [value]="duty"
+      (change)="setLifetime($event.value)"
+      aria-label="percent"
+    ></mat-slider>
+  </div>
+  <div class="row content">
+    <mat-list *ngIf="simulations$[duty] | async as lifetime; else loading">
+      <mat-list-item>
+        <div mat-line style="font-size: 1.5rem; margin-bottom: 10px">
+          {{ round(lifetime * (0.1+(1 - duty / 100))) | formatSeconds }}
+        </div>
+        <div mat-line>Battery Lifetime</div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <ng-template #loading>
+    <mat-spinner
+      class="custom-spinner"
+      diameter="80"
+      style="margin: 0 auto"
+    ></mat-spinner>
+  </ng-template>
+
+  <div class="row">
+    <button (click)="changeDuty()" mat-raised-button color="accent">
+      Update Sensors
+    </button>
+  </div>
+</mat-card>

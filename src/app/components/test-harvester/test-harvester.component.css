@@ -1,0 +1,21 @@
+.pending {
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 1.1rem;
+  line-height: 2;
+  margin: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.error {
+  background: rgb(246 167 163);
+  color: rgba(0, 0, 0, 0.699);
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 1.1rem;
+  line-height: 2;
+  margin: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}

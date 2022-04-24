@@ -1,0 +1,36 @@
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-subtitle>Things</mat-card-subtitle>
+  </mat-card-header>
+  <table mat-table [dataSource]="things" class="mat-elevation-z0">
+    <ng-container matColumnDef="icon">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let thing">
+        <mat-icon> {{ thing.type || "sensors" }}</mat-icon>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let thing">{{ thing.devId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="current">
+      <th mat-header-cell *matHeaderCellDef>Consumption</th>
+      <td mat-cell *matCellDef="let thing">
+        {{
+          thing.devAvgI ||
+            thing.activeI * (thing.duty/100) + thing.lowpwrI * (1 -  (thing.duty/100))
+        }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="maxCurrent">
+      <th mat-header-cell *matHeaderCellDef>Max</th>
+      <td mat-cell *matCellDef="let thing">{{ thing.activeI }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</mat-card>

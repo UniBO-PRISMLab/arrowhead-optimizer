@@ -1,0 +1,6 @@
+POST http://137.204.57.93:4308/gas-sensor-dutycycle
+Content-Type: application/json
+
+{
+ "duty_cycle": 10
+}

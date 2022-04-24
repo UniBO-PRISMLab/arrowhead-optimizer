@@ -1,0 +1,52 @@
+mat-slider {
+  width: 100%;
+}
+.card {
+  width: 100%;
+  margin: 10px;
+  box-sizing: border-box;
+  text-align: center;
+
+}
+
+.time {
+  font-weight: 500;
+  line-height: 80px;
+  text-align: center;
+  font-size: 25px;
+}
+.content {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 80%;
+}
+
+.row {
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 10px;
+  margin: 10px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin: 10px;
+}
+.component {
+  justify-content: center;
+  align-items: center;
+
+}
+:host ::ng-deep .custom-spinner circle {
+  stroke: rgb(102 220 255);
+
+
+}
+

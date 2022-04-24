@@ -1,11 +1,11 @@
 <ng-container
-  *ngIf="{
+  *ngIf="show && {
     data: observable$ | async,
     err: observableError$ | async
   } as observable"
 >
   <div *ngIf="!observable.err && observable.data as data; else loading">
-    <p>{{ data | json }}</p>
+    <p *ngIf="show">{{ data | json }}</p>
   </div>
   <p *ngIf="observable.err as err">{{ err }}</p>
 
@@ -14,4 +14,3 @@
       <div>Loading...</div>
     </div>
   </ng-template>
-</ng-container>

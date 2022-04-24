@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Change Duty Cycle</h1>
+<div mat-dialog-content>
+  Change the duty cycle of the {{ data.device }} to {{ data.duty }}?
+  <br />
+  This operation takes time to be performed.
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onConfirm()">Confirm</button>
+  <button mat-button mat-dialog-close>Close</button>
+</div>

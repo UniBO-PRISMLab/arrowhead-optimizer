@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { interval, Observable, take, timer } from 'rxjs';
+import { interval, take } from 'rxjs';
 
 @Component({
   selector: 'app-timer',
-  template: '{{ time - clock  }}',
+  templateUrl: 'time.component.html',
 })
 export class TimerComponent implements OnInit {
   @Output() finish = new EventEmitter();
-  @Input()
-  time!: number;
+  @Input() time!: number;
+  @Input() seconds: boolean = true;
   clock: number = 0;
 
   ngOnInit(): void {

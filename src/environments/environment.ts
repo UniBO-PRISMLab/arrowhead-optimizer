@@ -7,8 +7,13 @@ export const environment = {
   arrowhead: {
     host: 'http://137.204.57.93',
     port: 8443,
-    harvester: 'dr-harvester',
+    harvester: 'emeritus-harvester',
     networkWT: 'network-web-thing',
+    services: ['gassensor','gassensor']
+  },
+  cache: {
+    durationInMinutes: 5,
+    defaultKey: 'DEFAULT',
   },
   poolingTime: 15,
 };

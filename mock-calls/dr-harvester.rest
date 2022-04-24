@@ -9,7 +9,7 @@ Content-Type: application/json
 	"activeI": 20,
 	"duty": 20,
 	"Vload": 3.3,
-    "devAvgI": null,
+  "devAvgI": null,
 	"batSOC": null,
 	"batV": 3.82,
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 }
 
 #####
-GET  http://137.204.57.93:7739/harvester/simulation/eb20a801-85e4-4445-8a5d-88a510b80be5
+GET  http://137.204.57.93:7739/harvester/simulation/ceecfd53-6fbb-432b-a366-d4e2031907f1
 
 #####
 GET  http://137.204.57.93:7739/harvester/simulation/eb20a801-85e4-4445-8a5d-88a510b80be1
@@ -66,3 +66,44 @@ GET http://137.204.57.93:8443/serviceregistry/mgmt/2091
 ###
 DELETE http://137.204.57.93:8443/serviceregistry/mgmt/3061
 Accept: application/json
+
+
+### create Emeritus Harvester arrowhead service
+POST http://137.204.57.93:8443/serviceregistry/register
+Content-Type: application/json
+
+{
+   "endOfValidity":"2031-01-01 23:59:59",
+   "interfaces":[
+      "HTTPS-SECURE-JSON"
+   ],
+   "providerSystem":{
+      "address":"http://localhost",
+      "port": 2022,
+      "systemName":"emeritus-harvester"
+   },
+   "secure":"NOT_SECURE",
+   "serviceDefinition":"emeritus-harvester",
+   "serviceUri":"harvester",
+   "version":0
+}
+####
+### create Emeritus Harvester arrowhead service
+POST http://137.204.57.93:8443/serviceregistry/register
+Content-Type: application/json
+
+{
+   "endOfValidity":"2031-01-01 23:59:59",
+   "interfaces":[
+      "HTTPS-SECURE-JSON"
+   ],
+   "providerSystem":{
+      "address":"http://137.204.57.93",
+      "port": 4308,
+      "systemName":"GasSensor"
+   },
+   "secure":"NOT_SECURE",
+   "serviceDefinition":"GasSensor",
+   "serviceUri":"gas-sensor-harvester-info",
+   "version":0
+}

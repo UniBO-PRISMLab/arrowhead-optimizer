@@ -1,0 +1,11 @@
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-subtitle>Duty Cycle</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class="content">
+    <div *ngIf="duty$ | async as duty" class="spinner-container">
+      <app-percentage-spinner [value]="duty"></app-percentage-spinner>
+    </div>
+  </mat-card-content>
+</mat-card>

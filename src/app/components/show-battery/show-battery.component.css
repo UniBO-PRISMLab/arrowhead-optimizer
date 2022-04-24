@@ -1,0 +1,27 @@
+.card {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.material-icons {
+  font-size: 120px;
+}
+
+app-timer {
+  font-weight: 500;
+  font-size: 20px;
+}
+
+
+:host ::ng-deep .custom-spinner circle {
+  stroke: rgb(102 220 255);
+}
+
+.power {
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 2;
+}

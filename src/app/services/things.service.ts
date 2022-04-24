@@ -1,53 +1,57 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, map, Observable, retry, share, shareReplay } from 'rxjs';
 import { ArrowheadService } from './arrowhead.service';
+import { HttpHandler } from '../model/base-http.model';
+import { IDrHarvesterInput } from '../model/dr-harvester/dr-harvester-input.model';
+import { ThingCacheService } from './thing-cache.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ThingsService {
-  private _thingsUrl: string = '';
-  constructor(private http: HttpClient, private _arrowhead: ArrowheadService) {
-    this._arrowhead.getNetworkWT().subscribe((service) => {
-      this._thingsUrl = `${service.provider.address}:${service.provider.port}`;
-    });
+export class ThingsService extends HttpHandler {
+  //TODO: created shared thing object
+  //TODO: update shared thing object when duty gets updated
+  cachedThing$: Observable<IDrHarvesterInput> | undefined;
+
+  protected override _url: string = '';
+  constructor(
+    private http: HttpClient,
+    private _arrowhead: ArrowheadService,
+    private _thingCache: ThingCacheService
+  ) {
+    super();
+
+    this._arrowhead
+      .getNetworkWT()
+      .subscribe(
+        (service) =>
+          (this._url = service
+            ? `${service.provider.address}:${service.provider.port}`
+            : '/assets/data/things.json')
+      );
   }
 
-  changeDutyCicle(duty: number) {
+  changeDutyCycle(duty: number) {
     return this.http
-      .post(`${this._thingsUrl}/dutyCicle`, { dutyCicle: duty })
-      .pipe(catchError(this.handleError));
-  }
-
-  getThings(){
-    return this.http
-      .get(
-        `${this._thingsUrl}/things`
-      )
+      .post(`${this._url}/dutyCycle`, { dutyCicle: duty })
       .pipe(retry(3), catchError(this.handleError));
   }
 
-  //TODO: create service for error handling
-  private handleError(error: HttpErrorResponse | any): Observable<never> {
-    let msg = '';
-    //* This means sintax error (aka wrng url or didn't find the URL)
-    if (error.code == 12) {
-      console.log(JSON.stringify(error));
-      msg += `sintax error: bad URL - ${this._thingsUrl}`;
-    } else if (error.status === 0)
-      msg += `Client-side erro: ${JSON.stringify(error, [
-        'message',
-        'arguments',
-        'type',
-        'name',
-      ])}`;
-    else
-      msg += `Error status code: ${error.status}, body: ${JSON.stringify(
-        error.error
-      )}`;
-    return throwError(
-      () => new Error(`Fetching data from ThingsHub - ${msg}`)
-    );
+
+  getThings(url=this._url, path='things'): Observable<IDrHarvesterInput> {
+    let thing$ = this._thingCache.getValue();
+    if (!thing$) {
+      thing$ = this.http
+        //.get<IDrHarvesterInput>('/assets/data/things.json')
+        .get<IDrHarvesterInput>(`${url}/${path}`)
+        .pipe(retry(3), catchError(this.handleError), shareReplay(1));
+      this._thingCache.setValue(thing$);
+    }
+    return thing$;
+  }
+
+  getThingsAttribute<T>(attr: string): Observable<T> {
+    return this.getThings().pipe(map((things: any) => things[attr]));
   }
 }

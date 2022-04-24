@@ -1,0 +1,39 @@
+<div *ngFor="let simulation of simulations; index as i">
+  <observable-handlers
+    [show]="false"
+    (data)="getSimulationResult(i, $event)"
+    (error)="handleError($event)"
+    [observable$]="simulation.job$"
+  ></observable-handlers>
+  <observable-handlers
+    [show]="false"
+    *ngIf="simulation.output$; else simulationRunning"
+    [observable$]="simulation.output$"
+    (data)="setSimulationResult($event, i)"
+  ></observable-handlers>
+
+  <ng-template #simulationRunning>
+    <div *ngIf="simulation.jobId">
+      <mat-card class="mat-typography pending">
+        Simulation is still running. Next call at
+        <app-timer [time]="poolingTime" (finish)="callAgain()"></app-timer>s
+        <mat-card-footer>
+          <mat-progress-bar mode="query"></mat-progress-bar>
+        </mat-card-footer>
+      </mat-card>
+      <br />
+    </div>
+
+    <div *ngIf="simulationError[i]">
+      <mat-card class="mat-typography error">
+        Max number of simulations executing at DrHarvester - new attempt in
+        <app-timer [time]="poolingTime" (finish)="restartSimulation()"></app-timer>s
+        <mat-card-footer>
+          <mat-progress-bar color="warn" mode="query"></mat-progress-bar>
+        </mat-card-footer>
+      </mat-card>
+
+      <br />
+    </div>
+  </ng-template>
+</div>

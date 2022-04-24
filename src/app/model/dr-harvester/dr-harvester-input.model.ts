@@ -14,19 +14,20 @@ export interface IDrHarvesterInput {
   thGrad: number | null;
   vibAcc: number | null;
   vibFreq: number | null;
+  type?: string;
 }
 
 export class DrHarvesterInput implements IDrHarvesterInput {
   devId = 'GasSensor';
   harvId = 'SolarLightLoad';
 
-  lowpwrI = 1;
-  activeI = 20;
+  lowpwrI = 400;
+  activeI = 715;
   duty = 20;
-  Vload = 3.3;
+  Vload = 5;
   devAvgI = null;
   batSOC = null;
-  batV = 3.82;
+  batV = 3.75;
 
   phIrr = 700;
   thThot = null;
@@ -34,4 +35,22 @@ export class DrHarvesterInput implements IDrHarvesterInput {
   thGrad = null;
   vibAcc = null;
   vibFreq = null;
+}
+
+export enum DrHarvesterSelector{
+  devId = "devId",
+  harvId = "harvId",
+  lowpwrI = "lowpwrI",
+  activeI = "activeI",
+  duty = "duty",
+  Vload = "Vload",
+  devAvgI = "devAvgI",
+  batSOC = "batSOC",
+  batV = "batV",
+  phIrr = "phIrr",
+  thTcold = "thTcold",
+  thThot = "thThot",
+  thGrad = "thGrad",
+  vibAcc = "vibAcc",
+  vibFreq = "vibFreq",
 }

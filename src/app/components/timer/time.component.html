@@ -1,0 +1,7 @@
+
+  <span *ngIf="seconds; else format">
+    {{ time - clock }}
+  </span>
+  <ng-template #format>
+    {{ time - clock | formatSeconds }}
+  </ng-template>
