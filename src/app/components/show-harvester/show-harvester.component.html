@@ -4,11 +4,6 @@
   </mat-card-header>
 
   <mat-card-content class="content">
-    <ng-container *ngIf="harvesterType$ | async as type; else loadingOrError">
-      <span [class]="setIconClass(type)">{{ this.setHarvester(type) }}</span>
-    </ng-container>
-    <ng-template #loadingOrError>
-      <span [class]="setIconClass()">{{ this.setHarvester() }}</span>
-    </ng-template>
+      <span [class]="setIconClass(harvesterType)">{{ this.setHarvester(harvesterType) }}</span>
   </mat-card-content>
 </mat-card>

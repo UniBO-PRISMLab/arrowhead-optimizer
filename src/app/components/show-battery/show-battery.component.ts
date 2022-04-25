@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 import { IDrHarvesterInput } from 'src/app/model/dr-harvester/dr-harvester-input.model';
 import { IDrHarvesterJob } from 'src/app/model/dr-harvester/dr-harvester-output.model';
 import { BatteryService } from 'src/app/services/battery.service';
 import { DrHarvesterService } from 'src/app/services/dr-harvester.service';
-import { ThingsService } from 'src/app/services/things.service';
 
 @Component({
   selector: 'app-show-battery',
@@ -18,28 +17,22 @@ export class ShowBatteryComponent implements OnInit {
   batteryLifetime: number = NaN;
   isLoading = true;
   show = false;
-  battery$!: Observable<BatteryType>;
+  battery!: BatteryType;
 
+  @Input() thing!: IDrHarvesterInput;
   constructor(
-    private _thingService: ThingsService,
     private _batteryService: BatteryService,
     private _drHarvester: DrHarvesterService
   ) {}
+  ngOnInit(): void {
+    this.initSimulation(this.thing);
+    this.charge = this._batteryService.convertVToPercent(this.thing.batV);
+    this.battery = this.caculateBattery(this.charge);
+  }
 
   setBatteryInfo() {
     this.isLoading = isNaN(this.hours);
     if (this.isLoading) this.batteryLifetime = this.hours * 3600;
-  }
-  thing$!: Observable<IDrHarvesterInput>;
-  ngOnInit(): void {
-    this.battery$ = this._thingService.getThings().pipe(
-      tap((thing) => this.initSimulation(thing)),
-      map((thing) => {
-        const charge = this._batteryService.convertVToPercent(thing.batV);
-        this.charge = charge;
-        return this.caculateBattery(charge);
-      })
-    );
   }
 
   initSimulation(thing: IDrHarvesterInput) {
@@ -57,7 +50,6 @@ export class ShowBatteryComponent implements OnInit {
       .subscribe((simulation): void => {
         if (simulation.result?.batlifeh)
           this.batteryLifetime = simulation.result?.batlifeh;
-
         this.isLoading = false;
         subscription.unsubscribe();
       });

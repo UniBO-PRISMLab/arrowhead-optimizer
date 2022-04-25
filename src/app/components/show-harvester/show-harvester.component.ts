@@ -1,13 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { Observable } from 'rxjs';
-import { DrHarvesterSelector } from 'src/app/model/dr-harvester/dr-harvester-input.model';
-import { ThingsService } from 'src/app/services/things.service';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-show-harvester',
@@ -15,14 +6,10 @@ import { ThingsService } from 'src/app/services/things.service';
   styleUrls: ['./show-harvester.component.css'],
 })
 export class ShowHarvesterComponent implements OnInit {
-  harvesterType$!: Observable<string>;
-  constructor(private _thingService: ThingsService) {}
+  @Input('type') harvesterType: string = '';
+  constructor() {}
 
-  ngOnInit(): void {
-    this.harvesterType$ = this._thingService.getThingsAttribute(
-      DrHarvesterSelector.harvId
-    );
-  }
+  ngOnInit(): void {}
   setHarvester(type: string = ''): string {
     switch (type) {
       case 'TEG':

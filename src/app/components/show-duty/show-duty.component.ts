@@ -1,10 +1,5 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import {
-  DrHarvesterSelector,
-  IDrHarvesterInput,
-} from 'src/app/model/dr-harvester/dr-harvester-input.model';
-import { ThingsService } from 'src/app/services/things.service';
+import { Component, Input } from '@angular/core';
+
 
 @Component({
   selector: 'app-show-duty',
@@ -12,14 +7,7 @@ import { ThingsService } from 'src/app/services/things.service';
   styleUrls: ['./show-duty.component.css'],
 })
 export class ShowDutyComponent {
-  duty$!: Observable<number>;
-  //thing$!: Observable<IDrHarvesterInput>;
-  constructor(private _thingService: ThingsService) {}
+  @Input() duty!: number;
+  constructor() {}
 
-  ngOnInit(): void {
-    this.duty$ = this._thingService.getThingsAttribute<number>(
-      DrHarvesterSelector.duty
-    );
-    // this.thing$ = this._thingService.getThings();
-  }
 }

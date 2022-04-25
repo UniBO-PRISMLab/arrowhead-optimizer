@@ -15,12 +15,11 @@ import { ThingsService } from 'src/app/services/things.service';
   styleUrls: ['./show-power.component.css'],
 })
 export class ShowPowerComponent implements OnInit {
-  thing$!: Observable<IDrHarvesterInput>;
+ @Input() thing!:IDrHarvesterInput;
 
-  constructor(private _thingService: ThingsService) {}
+  constructor() {}
 
   ngOnInit(): void {
-    this.thing$ = this._thingService.getThings();
   }
 
   calculatePower(thing: IDrHarvesterInput): number {

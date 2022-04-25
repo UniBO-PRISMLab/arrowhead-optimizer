@@ -4,28 +4,38 @@
   </mat-card-header>
 
   <mat-card-content class="content">
-    <div *ngIf="battery$ | async as battery">
-      <span [style.color]="battery.color" class="material-icons parent">{{
-        battery.charge
-      }}</span>
-      <div>
-        <div class="power">{{ charge | percent }}</div>
-        <div *ngIf="isLoading; else timer">
-          <mat-spinner
-            class="custom-spinner"
-            diameter="30"
-            style="margin: 0 auto"
-          ></mat-spinner>
-          Loading simulation...
-        </div>
-        <ng-template #timer>
+    <span [style.color]="battery.color" class="material-icons parent">{{
+      battery.charge
+    }}</span>
+    <div>
+      <div class="power">{{ charge | percent }}</div>
+      <div *ngIf="isLoading; else timer">
+        <mat-spinner
+          class="custom-spinner"
+          diameter="30"
+          style="margin: 0 auto"
+        ></mat-spinner>
+        Loading simulation...
+      </div>
+      <ng-template #timer>
+        <div *ngIf="batteryLifetime >= 0; else batteryUnknown">
           <app-timer
             [style.color]="battery.color"
             [seconds]="false"
             [time]="batteryLifetime * 3600"
           ></app-timer>
+        </div>
+        <ng-template #batteryUnknown>
+          <span
+            matTooltip="Simulation couldn't define the battery lifetime"
+            matTooltipPosition="above"
+            [style.color]="battery.color"
+            class="power"
+            >Unknown</span
+          >
         </ng-template>
-      </div>
+      </ng-template>
     </div>
+    Battery Lifetime
   </mat-card-content>
 </mat-card>

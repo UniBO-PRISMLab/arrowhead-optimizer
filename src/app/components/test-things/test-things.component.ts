@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {
-  IDrHarvesterInput,
-} from 'src/app/model/dr-harvester/dr-harvester-input.model';
+import { IDrHarvesterInput } from 'src/app/model/dr-harvester/dr-harvester-input.model';
 
 @Component({
   selector: 'app-test-thing',
@@ -10,9 +8,7 @@ import {
 })
 export class TestThingsComponent {
   @Input() thing!: IDrHarvesterInput;
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit(): void {
   }

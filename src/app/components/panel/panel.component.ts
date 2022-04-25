@@ -25,6 +25,7 @@ export class PanelComponent implements OnInit {
           const url = `${service.provider.address}:${service.provider.port}`;
           return this._thingService.getThings(url, service.serviceUri);
         }), map(things => {
+          //todo: this is only for tests
           things.batV = 2.2;
           return things;
         })
