@@ -11,18 +11,19 @@
       <div class="power">{{ charge | percent }}</div>
       <div *ngIf="isLoading; else timer">
         <mat-spinner
+          matTooltip="Simulation running..."
+          matTooltipPosition="below"
           class="custom-spinner"
           diameter="30"
           style="margin: 0 auto"
         ></mat-spinner>
-        Loading simulation...
       </div>
       <ng-template #timer>
         <div *ngIf="batteryLifetime >= 0; else batteryUnknown">
           <app-timer
             [style.color]="battery.color"
             [seconds]="false"
-            [time]="batteryLifetime * 3600"
+            [time]="formatBattery(batteryLifetime)"
           ></app-timer>
         </div>
         <ng-template #batteryUnknown>

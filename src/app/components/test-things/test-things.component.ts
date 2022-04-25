@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IDrHarvesterInput } from 'src/app/model/dr-harvester/dr-harvester-input.model';
 
 @Component({
@@ -8,6 +8,7 @@ import { IDrHarvesterInput } from 'src/app/model/dr-harvester/dr-harvester-input
 })
 export class TestThingsComponent {
   @Input() thing!: IDrHarvesterInput;
+  @Output() dutyChanged = new EventEmitter<string>();
   constructor() {}
 
   ngOnInit(): void {

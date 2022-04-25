@@ -1,13 +1,29 @@
 <mat-accordion class="panel">
-  <div *ngFor="let thing$ of things">
-    <mat-expansion-panel *ngIf="thing$ | async as thing" class="panel">
+  <div *ngFor="let thing of things">
+    <mat-expansion-panel class="panel">
       <mat-expansion-panel-header>
-        <mat-panel-title> SHM Sensors </mat-panel-title>
+        <mat-panel-title> {{ thing.name }} </mat-panel-title>
         <mat-panel-description>
-          sensors monitorings a bridge
+          {{ thing.description }}
         </mat-panel-description>
       </mat-expansion-panel-header>
-          <app-test-thing [thing]="thing"></app-test-thing>
+      <div *ngIf="thing.data$ | async as data; else loading">
+        <app-test-thing
+          [thing]="data"
+          (dutyChanged)="updateThing($event)"
+        ></app-test-thing>
+      </div>
+      <ng-template #loading>
+        <div class="content">
+          <mat-spinner
+            matTooltip="Updating device..."
+            matTooltipPosition="below"
+            class="custom-spinner"
+            diameter="100"
+            style="margin: 0 auto"
+          ></mat-spinner>
+        </div>
+      </ng-template>
     </mat-expansion-panel>
   </div>
 </mat-accordion>

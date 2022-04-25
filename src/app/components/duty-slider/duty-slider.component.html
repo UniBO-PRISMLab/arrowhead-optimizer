@@ -1,0 +1,12 @@
+<mat-slider
+      thumbLabel
+      matTooltip="Change device Duty Cycle"
+      matTooltipPosition="above"
+      [displayWith]="formatLabel"
+      [step]="step"
+      [min]="min"
+      [max]="max"
+      [value]="duty"
+      (change)="change($event.value)"
+      aria-label="percent"
+    ></mat-slider>

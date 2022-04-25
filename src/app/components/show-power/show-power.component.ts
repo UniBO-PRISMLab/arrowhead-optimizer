@@ -1,25 +1,29 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, Input } from '@angular/core';
 import { IDrHarvesterInput } from 'src/app/model/dr-harvester/dr-harvester-input.model';
-import { ThingsService } from 'src/app/services/things.service';
 
 @Component({
   selector: 'app-show-power',
   templateUrl: './show-power.component.html',
   styleUrls: ['./show-power.component.css'],
 })
-export class ShowPowerComponent implements OnInit {
- @Input() thing!:IDrHarvesterInput;
+export class ShowPowerComponent {
+  @Input() thing!: IDrHarvesterInput;
 
   constructor() {}
 
-  ngOnInit(): void {
+  showCurrentPower(thing: IDrHarvesterInput): string {
+    let currentPower = this.calculatePower(thing);
+    if (currentPower >= 1) return `${this.format(currentPower)} W`;
+    else return `${this.format(currentPower * 1000)} mW`;
+  }
+  showMaxPower(thing: IDrHarvesterInput): string {
+    let maxPower = (thing.activeI / 1000) * thing.Vload;
+    if (maxPower >= 1) return `${this.format(maxPower)} W`;
+    else return `${this.format(maxPower * 1000)} mW`;
+  }
+
+  calculatePowerUsage(thing: IDrHarvesterInput): number {
+    return this.calculatePower(thing) / ((thing.activeI / 1000) * thing.Vload);
   }
 
   calculatePower(thing: IDrHarvesterInput): number {
@@ -30,5 +34,12 @@ export class ShowPowerComponent implements OnInit {
         1000) *
       thing.Vload
     );
+  }
+  private format(number: number): string {
+    return number.toLocaleString('en-US', {
+      minimumIntegerDigits: 2,
+      maximumFractionDigits: 2,
+      useGrouping: false,
+    });
   }
 }

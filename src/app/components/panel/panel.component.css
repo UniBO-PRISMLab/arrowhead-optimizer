@@ -1,10 +1,30 @@
 .panel {
   margin: 10px;
-  background-color: #1d1d1d;/* #121212; */
-
+  background-color: #1d1d1d; /* #121212; */
 }
 .mat-expansion-panel-header {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 16px;
   font-weight: 500;
+}
+
+.content {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 625px;
+}
+
+
+.row {
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 10px;
+  margin: 10px;
 }

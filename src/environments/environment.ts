@@ -9,13 +9,33 @@ export const environment = {
     port: 8443,
     harvester: 'emeritus-harvester',
     networkWT: 'network-web-thing',
-    services: ['gassensor','gassensor']
+    services: ['gassensor', 'gassensor'],
+  },
+  paths: {
+    gassensor: {
+      name: 'Gas Sensor',
+      description: 'comercial gas sensor',
+      havesterInput: 'gas-sensor-harvester-info',
+      changeDuty: 'gas-sensor-dutycycle',
+      duty: {
+        min: 10,
+        max: 33,
+        step: 1,
+      },
+    },
+    thingsHub: {
+      name: 'SHM Sensors',
+      description: 'sensors monitoring the structural health of a bridge',
+      havesterInput: 'things',
+      changeDuty: 'duty',
+    },
   },
   cache: {
     durationInMinutes: 5,
     defaultKey: 'DEFAULT',
   },
   poolingTime: 15,
+  fakeLifetime: false,
 };
 
 /*

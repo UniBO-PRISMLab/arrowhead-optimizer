@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ThingsService } from './things.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -23,12 +23,23 @@ export class BatteryService {
 
   tensionValues: number[] = [];
 
-  constructor(private _thingService: ThingsService) {
+  constructor() {
     for (let key in this.conversion)
       this.tensionValues.push(key as unknown as number);
   }
 
-  getBattery() {}
+  formatBattery(hours: number, duty?: number): string | number {
+    if (hours < 0) return 'Unknown';
+
+    let batteryLifetime = Math.round(hours * 3600);
+    if (environment.fakeLifetime)
+      batteryLifetime = this.fakeLifetime(batteryLifetime, duty || 1);
+    return batteryLifetime;
+  }
+
+  fakeLifetime(seconds: number, duty: number): number {
+    return seconds * (0.1 + (1 - duty / 100));
+  }
 
   convertVToPercent(batteryVload: number): any {
     const tension = this.tensionValues.reduce((a, b) => {

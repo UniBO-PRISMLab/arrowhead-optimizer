@@ -11,7 +11,8 @@ export class FormatSecondsPipe implements PipeTransform {
     });
   }
 
-  transform(seconds: number, ...args: unknown[]): string {
+  transform(seconds: number | string, ...args: unknown[]): string {
+    if(typeof seconds !== 'number') return seconds;
     let hour = Math.floor(seconds / 3600);
     seconds %= 3600;
     let minute = Math.floor(seconds / 60);

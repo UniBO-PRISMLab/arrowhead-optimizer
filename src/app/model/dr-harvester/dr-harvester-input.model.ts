@@ -14,7 +14,7 @@ export interface IDrHarvesterInput {
   thGrad: number | null;
   vibAcc: number | null;
   vibFreq: number | null;
-  type?: string;
+  id?: string;
 }
 
 export class DrHarvesterInput implements IDrHarvesterInput {
@@ -37,20 +37,20 @@ export class DrHarvesterInput implements IDrHarvesterInput {
   vibFreq = null;
 }
 
-export enum DrHarvesterSelector{
-  devId = "devId",
-  harvId = "harvId",
-  lowpwrI = "lowpwrI",
-  activeI = "activeI",
-  duty = "duty",
-  Vload = "Vload",
-  devAvgI = "devAvgI",
-  batSOC = "batSOC",
-  batV = "batV",
-  phIrr = "phIrr",
-  thTcold = "thTcold",
-  thThot = "thThot",
-  thGrad = "thGrad",
-  vibAcc = "vibAcc",
-  vibFreq = "vibFreq",
+export enum DrHarvesterSelector {
+  devId = 'devId',
+  harvId = 'harvId',
+  lowpwrI = 'lowpwrI',
+  activeI = 'activeI',
+  duty = 'duty',
+  Vload = 'Vload',
+  devAvgI = 'devAvgI',
+  batSOC = 'batSOC',
+  batV = 'batV',
+  phIrr = 'phIrr',
+  thTcold = 'thTcold',
+  thThot = 'thThot',
+  thGrad = 'thGrad',
+  vibAcc = 'vibAcc',
+  vibFreq = 'vibFreq',
 }

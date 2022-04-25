@@ -1,10 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, retry, share, shareReplay } from 'rxjs';
+import {
+  catchError,
+  map,
+  mergeMap,
+  Observable,
+  retry,
+  shareReplay,
+} from 'rxjs';
 import { ArrowheadService } from './arrowhead.service';
 import { HttpHandler } from '../model/base-http.model';
 import { IDrHarvesterInput } from '../model/dr-harvester/dr-harvester-input.model';
 import { ThingCacheService } from './thing-cache.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +21,10 @@ export class ThingsService extends HttpHandler {
   //TODO: created shared thing object
   //TODO: update shared thing object when duty gets updated
   cachedThing$: Observable<IDrHarvesterInput> | undefined;
-
+  services: { [key: string]: Observable<Service> } = {};
+  serviceNames = environment.arrowhead.services;
+  paths: { [key: string]: { havesterInput: string; changeDuty: string } } =
+    environment.paths;
   protected override _url: string = '';
   constructor(
     private http: HttpClient,
@@ -21,37 +32,64 @@ export class ThingsService extends HttpHandler {
     private _thingCache: ThingCacheService
   ) {
     super();
-
-    this._arrowhead
-      .getNetworkWT()
-      .subscribe(
-        (service) =>
-          (this._url = service
-            ? `${service.provider.address}:${service.provider.port}`
-            : '/assets/data/things.json')
+    for (const serviceName of this.serviceNames)
+      this.services[serviceName] = this._arrowhead.getService(serviceName).pipe(
+        map((service) => {
+          const name = service.provider.systemName;
+          return {
+            id: name,
+            url: `${service.provider.address}:${service.provider.port}`,
+            path: this.paths[name],
+          };
+        })
       );
   }
 
-  changeDutyCycle(duty: number) {
-    return this.http
-      .post(`${this._url}/dutyCycle`, { dutyCicle: duty })
-      .pipe(retry(3), catchError(this.handleError));
+  changeDutyCycle(duty: number, serviceName: string) {
+    return this.services[serviceName].pipe(
+      mergeMap((service) =>
+        this.http.post(`${service.url}/${service.path.changeDuty}`, {
+          duty_cycle: duty,
+        })
+      ),
+      retry(3),
+      catchError(this.handleError)
+    );
   }
 
-
-  getThings(url=this._url, path='things'): Observable<IDrHarvesterInput> {
-    let thing$ = this._thingCache.getValue();
+  getThings(serviceName: string, cache = true): Observable<IDrHarvesterInput> {
+    let thing$;
+    if (cache) thing$ = this._thingCache.getValue();
     if (!thing$) {
-      thing$ = this.http
-        //.get<IDrHarvesterInput>('/assets/data/things.json')
-        .get<IDrHarvesterInput>(`${url}/${path}`)
-        .pipe(retry(3), catchError(this.handleError), shareReplay(1));
+      thing$ = this.services[serviceName].pipe(
+        mergeMap((service) =>
+          this.http.get<IDrHarvesterInput>(
+            `${service.url}/${service.path.havesterInput}`
+          )
+        ),
+        map((service) => {
+          service.id = serviceName;
+          return service;
+        }),
+        retry(3),
+        catchError(this.handleError),
+        shareReplay(1)
+      );
       this._thingCache.setValue(thing$);
     }
     return thing$;
   }
 
-  getThingsAttribute<T>(attr: string): Observable<T> {
-    return this.getThings().pipe(map((things: any) => things[attr]));
+  getThingsAttribute<T>(attr: string, serviceName: string): Observable<T> {
+    return this.getThings(serviceName).pipe(map((things: any) => things[attr]));
   }
 }
+
+export type Service = {
+  id: string;
+  url: string;
+  path: {
+    havesterInput: string;
+    changeDuty: string;
+  };
+};

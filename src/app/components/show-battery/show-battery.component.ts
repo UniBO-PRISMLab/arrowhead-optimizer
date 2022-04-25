@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { map, Observable, tap } from 'rxjs';
 import { IDrHarvesterInput } from 'src/app/model/dr-harvester/dr-harvester-input.model';
 import { IDrHarvesterJob } from 'src/app/model/dr-harvester/dr-harvester-output.model';
 import { BatteryService } from 'src/app/services/battery.service';
@@ -30,11 +29,11 @@ export class ShowBatteryComponent implements OnInit {
     this.battery = this.caculateBattery(this.charge);
   }
 
-  setBatteryInfo() {
-    this.isLoading = isNaN(this.hours);
-    if (this.isLoading) this.batteryLifetime = this.hours * 3600;
+  formatBattery(lifetime: number) {
+    let battery = this._batteryService.formatBattery(lifetime);
+    if (typeof battery === 'string') return 0;
+    return battery;
   }
-
   initSimulation(thing: IDrHarvesterInput) {
     let subscription = this._drHarvester
       .startSimulation(thing)

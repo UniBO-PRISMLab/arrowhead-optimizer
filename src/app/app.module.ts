@@ -25,6 +25,7 @@ import { ControlDutyComponent } from './components/control-duty/control-duty.com
 import { PercentageSpinnerComponent } from './components/percentage-spinner/percentage-spinner.component';
 import { PanelComponent } from './components/panel/panel.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { DutySliderComponent } from './components/duty-slider/duty-slider.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
     PercentageSpinnerComponent,
     PanelComponent,
     ConfirmDialogComponent,
+    DutySliderComponent,
   ],
   imports: [
     BrowserModule,

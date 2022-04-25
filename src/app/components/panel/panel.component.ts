@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { map, mergeMap, Observable } from 'rxjs';
+import { delay, map, Observable } from 'rxjs';
 import { IDrHarvesterInput } from 'src/app/model/dr-harvester/dr-harvester-input.model';
-import { ArrowheadService } from 'src/app/services/arrowhead.service';
 import { ThingsService } from 'src/app/services/things.service';
 import { environment } from 'src/environments/environment';
 
@@ -12,24 +11,40 @@ import { environment } from 'src/environments/environment';
 })
 export class PanelComponent implements OnInit {
   servicesNames = environment.arrowhead.services;
-  things!: Observable<IDrHarvesterInput>[];
-  constructor(
-    private _thingService: ThingsService,
-    private _arrowhead: ArrowheadService
-  ) {}
+  descriptions: { [key: string]: any } = environment.paths;
+  things!: {
+    name: string;
+    description: string;
+    data$: Observable<IDrHarvesterInput>;
+  }[];
+  constructor(private _thingService: ThingsService) {}
 
   ngOnInit(): void {
-    this.things = this.servicesNames.map((serviceName) =>
-      this._arrowhead.getService(serviceName).pipe(
-        mergeMap((service) => {
-          const url = `${service.provider.address}:${service.provider.port}`;
-          return this._thingService.getThings(url, service.serviceUri);
-        }), map(things => {
-          //todo: this is only for tests
-          things.batV = 2.2;
-          return things;
-        })
-      )
-    );
+    this.things = this.servicesNames.map((serviceName) => {
+      return {
+        name: this.descriptions[serviceName].name,
+        description: this.descriptions[serviceName].description,
+        data$: this._thingService.getThings(serviceName).pipe(
+          map((things) => {
+            //todo: this is only for tests
+            things.batV = 2.55;
+            return things;
+          })
+        ),
+      };
+    });
+  }
+
+  updateThing(serviceName: string) {
+    for (let thing of this.things)
+      if (thing.name === this.descriptions[serviceName].name)
+        thing.data$ = this._thingService.getThings(serviceName, false).pipe(
+          delay(5000),
+          map((things) => {
+            //todo: this is only for tests
+            things.batV = 2.55;
+            return things;
+          })
+        );
   }
 }

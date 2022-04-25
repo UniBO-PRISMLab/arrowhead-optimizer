@@ -1,7 +1,7 @@
 <div>
   <div class="row">
     <div class="column">
-      <app-show-battery  [thing]="thing"  class="component"></app-show-battery>
+      <app-show-battery [thing]="thing" class="component"></app-show-battery>
     </div>
     <div class="column">
       <app-show-duty [duty]="thing.duty" class="component"></app-show-duty>
@@ -19,10 +19,6 @@
   </div>
 
   <div class="row">
-    <!-- <div *ngIf="thing$ | async as thing"> -->
-    <!--     <app-control-duty [thing]="thing" class="component"></app-control-duty>
- -->
-    <!--     </div>
- -->
+      <app-control-duty [thing]="thing" (dutyChanged)="dutyChanged.emit($event)" class="component"></app-control-duty>
   </div>
 </div>
