@@ -18,6 +18,7 @@ export class ControlDutyComponent implements OnInit {
   @Output() dutyChanged = new EventEmitter<string>();
 
   public duty!: number;
+  public initialDuty!: number;
   public simulations$: Observable<number>[] = [];
   deviceParticularities: { [key: string]: any } = environment.paths;
 
@@ -33,6 +34,7 @@ export class ControlDutyComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.duty = this.thing.duty;
+    this.initialDuty = this.duty;
 
     if (this.thing.id) {
       let type = this.thing.id;
@@ -55,7 +57,7 @@ export class ControlDutyComponent implements OnInit {
       filter((simulation) => simulation.result != undefined),
       map((simulation) => {
         console.log(simulation.result);
-        return (simulation.result?.batlifeh || 0);
+        return simulation.result?.batlifeh || 0;
       })
     );
   }
@@ -68,6 +70,9 @@ export class ControlDutyComponent implements OnInit {
     this.duty = value;
   }
 
+  isButtonDisabled() {
+    return this.duty == this.initialDuty;
+  }
   changeDuty() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '600px',

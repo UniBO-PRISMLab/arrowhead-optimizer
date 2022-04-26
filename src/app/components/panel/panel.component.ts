@@ -25,11 +25,11 @@ export class PanelComponent implements OnInit {
         name: this.descriptions[serviceName].name,
         description: this.descriptions[serviceName].description,
         data$: this._thingService.getThings(serviceName).pipe(
-          map((things) => {
+/*           map((things) => {
             //todo: this is only for tests
             things.batV = 2.55;
             return things;
-          })
+          }) */
         ),
       };
     });
@@ -39,12 +39,12 @@ export class PanelComponent implements OnInit {
     for (let thing of this.things)
       if (thing.name === this.descriptions[serviceName].name)
         thing.data$ = this._thingService.getThings(serviceName, false).pipe(
-          delay(5000),
+/*           delay(5000),
           map((things) => {
             //todo: this is only for tests
             things.batV = 2.55;
             return things;
-          })
+          }) */
         );
   }
 }

@@ -31,13 +31,18 @@
   </ng-template>
 
   <div class="row">
-    <button
-      (click)="changeDuty()"
-      [disabled]=""
-      mat-raised-button
-      color="accent"
+    <div
+      matTooltip="duty value is the same as the current one"
+      [matTooltipDisabled]="!isButtonDisabled()"
     >
-      Update Sensors
-    </button>
+      <button
+        (click)="changeDuty()"
+        [disabled]="isButtonDisabled()"
+        mat-raised-button
+        color="accent"
+      >
+        Update Sensors
+      </button>
+    </div>
   </div>
 </mat-card>
