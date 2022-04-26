@@ -26,8 +26,8 @@ export const environment = {
     thingsHub: {
       name: 'SHM Sensors',
       description: 'sensors monitoring the structural health of a bridge',
-      havesterInput: 'things',
-      changeDuty: 'duty',
+      havesterInput: 'status',
+      changeDuty: 'dutyCycle',
     },
   },
   cache: {
