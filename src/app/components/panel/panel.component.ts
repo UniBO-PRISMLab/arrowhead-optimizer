@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { delay, map, Observable } from 'rxjs';
+import { delay, map, Observable, tap } from 'rxjs';
 import { IDrHarvesterInput } from 'src/app/model/dr-harvester/dr-harvester-input.model';
 import { ThingsService } from 'src/app/services/things.service';
 import { environment } from 'src/environments/environment';
@@ -25,7 +25,8 @@ export class PanelComponent implements OnInit {
         name: this.descriptions[serviceName].name,
         description: this.descriptions[serviceName].description,
         data$: this._thingService.getThings(serviceName).pipe(
-/*           map((things) => {
+          tap((service) => console.log(service))
+          /*           map((things) => {
             //todo: this is only for tests
             things.batV = 2.55;
             return things;
@@ -38,13 +39,15 @@ export class PanelComponent implements OnInit {
   updateThing(serviceName: string) {
     for (let thing of this.things)
       if (thing.name === this.descriptions[serviceName].name)
-        thing.data$ = this._thingService.getThings(serviceName, false).pipe(
-/*           delay(5000),
+        thing.data$ = this._thingService
+          .getThings(serviceName, false)
+          .pipe
+          /*           delay(5000),
           map((things) => {
             //todo: this is only for tests
             things.batV = 2.55;
             return things;
           }) */
-        );
+          ();
   }
 }

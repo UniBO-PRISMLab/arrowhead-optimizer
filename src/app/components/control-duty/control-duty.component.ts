@@ -36,7 +36,7 @@ export class ControlDutyComponent implements OnInit {
     this.duty = this.thing.duty;
     this.initialDuty = this.duty;
 
-    if (this.thing.id) {
+    if (this.thing.id && this.deviceParticularities[this.thing.id].duty ) {
       let type = this.thing.id;
       this.max = this.deviceParticularities[type].duty.max;
       this.min = this.deviceParticularities[type].duty.min;

@@ -10,8 +10,9 @@ WORKDIR /usr/local/app
 # Add the source code to app
 COPY ./ /usr/local/app/
 
+RUN npm config set timeout 6000000
 # Install all the dependencies
-RUN npm install
+RUN npm install --prefer-offline --no-audit
 
 # Generate the build of the application
 RUN npm run build

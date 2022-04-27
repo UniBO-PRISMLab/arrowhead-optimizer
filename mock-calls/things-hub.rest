@@ -1,1 +1,2 @@
-GET http://1eab-93-34-112-8.ngrok.io/status
+GET http://3b1e-93-34-112-8.ngrok.io:80/status
+

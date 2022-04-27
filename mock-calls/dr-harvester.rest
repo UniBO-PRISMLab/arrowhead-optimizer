@@ -107,3 +107,48 @@ Content-Type: application/json
    "serviceUri":"gas-sensor-harvester-info",
    "version":0
 }
+
+
+### create Emeritus Harvester arrowhead service
+POST http://137.204.57.93:8443/serviceregistry/register
+Content-Type: application/json
+
+{
+   "endOfValidity":"2031-01-01 23:59:59",
+   "interfaces":[
+      "HTTPS-SECURE-JSON"
+   ],
+   "providerSystem":{
+      "address":"http://3b1e-93-34-112-8.ngrok.io",
+      "port": 80,
+      "systemName":"thingshub"
+   },
+   "secure":"NOT_SECURE",
+   "serviceDefinition":"thingshub",
+   "serviceUri":"status",
+   "version":0
+}
+
+### create remote Emeritus Harvester arrowhead service
+POST http://137.204.57.93:8443/serviceregistry/register
+Content-Type: application/json
+
+{
+   "endOfValidity":"2031-01-01 23:59:59",
+   "interfaces":[
+      "HTTPS-SECURE-JSON"
+   ],
+   "providerSystem":{
+      "address":"http://137.204.143.89",
+      "port": 2022,
+      "systemName":"emeritus-harvester-remote"
+   },
+   "secure":"NOT_SECURE",
+   "serviceDefinition":"emeritus-harvester",
+   "serviceUri":"harvester",
+   "version":0
+}
+
+#### 489
+DELETE http://137.204.57.93:8443/serviceregistry/mgmt/systems/900
+Accept: application/json

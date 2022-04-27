@@ -7,9 +7,9 @@ export const environment = {
   arrowhead: {
     host: 'http://137.204.57.93',
     port: 8443,
-    harvester: 'emeritus-harvester',
+    harvester: 'emeritus-harvester-remote',
     networkWT: 'network-web-thing',
-    services: ['gassensor', 'gassensor'],
+    services: ['gassensor', 'thingshub'],
   },
   paths: {
     gassensor: {
@@ -23,7 +23,7 @@ export const environment = {
         step: 1,
       },
     },
-    thingsHub: {
+    thingshub: {
       name: 'SHM Sensors',
       description: 'sensors monitoring the structural health of a bridge',
       havesterInput: 'status',

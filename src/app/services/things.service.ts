@@ -59,7 +59,7 @@ export class ThingsService extends HttpHandler {
 
   getThings(serviceName: string, cache = true): Observable<IDrHarvesterInput> {
     let thing$;
-    if (cache) thing$ = this._thingCache.getValue();
+    if (cache) thing$ = this._thingCache.getValue(serviceName);
     if (!thing$) {
       thing$ = this.services[serviceName].pipe(
         mergeMap((service) =>
@@ -75,7 +75,7 @@ export class ThingsService extends HttpHandler {
         catchError(this.handleError),
         shareReplay(1)
       );
-      this._thingCache.setValue(thing$);
+      this._thingCache.setValue(thing$, serviceName);
     }
     return thing$;
   }
