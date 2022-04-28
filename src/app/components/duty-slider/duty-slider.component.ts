@@ -15,9 +15,11 @@ export class DutySliderComponent {
   constructor() {}
 
   change(value: number | null): void {
-    if (!value) return;
-    this.duty = value;
-    this.changeDuty.emit(this.duty);
+    if (value === null) return;
+    if (value != this.duty) {
+      this.duty = value;
+      this.changeDuty.emit(this.duty);
+    }
   }
   formatLabel(value: number) {
     return value + '%';

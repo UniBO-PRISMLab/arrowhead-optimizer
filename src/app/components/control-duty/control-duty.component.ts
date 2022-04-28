@@ -19,12 +19,13 @@ export class ControlDutyComponent implements OnInit {
 
   public duty!: number;
   public initialDuty!: number;
-  public simulations$: Observable<number>[] = [];
   deviceParticularities: { [key: string]: any } = environment.paths;
+  label: string = `Discharging Time`;
 
   max: number = 100;
   min: number = 5;
   step: number = 5;
+  lifetime$!: Observable<number>;
 
   constructor(
     private _drHarvester: DrHarvesterService,
@@ -36,38 +37,46 @@ export class ControlDutyComponent implements OnInit {
     this.duty = this.thing.duty;
     this.initialDuty = this.duty;
 
-    if (this.thing.id && this.deviceParticularities[this.thing.id].duty ) {
+    if (this.thing.id && this.deviceParticularities[this.thing.id].duty) {
       let type = this.thing.id;
       this.max = this.deviceParticularities[type].duty.max;
       this.min = this.deviceParticularities[type].duty.min;
       this.step = this.deviceParticularities[type].duty.step;
     }
-    for (let percent = this.min; percent <= this.max; percent += this.step)
-      this.getSimulation(percent);
+    this.lifetime$ = this.getBatteryLifetime(this.thing);
+  }
+
+  getBatteryLifetime(thing: IDrHarvesterInput) {
+    return this._drHarvester.startSimulation(thing).pipe(
+      mergeMap((job) => this._drHarvester.getSimulationUntilResult(job.jobId)),
+      filter((simulation) => simulation.result != undefined),
+      map((simulation) => {
+        this.setLabel(simulation.result?.batlifeh);
+        if (simulation.result?.batlifeh && simulation.result.batlifeh < 0)
+          return simulation.result.tChargeh;
+
+        return simulation.result?.batlifeh || 0;
+      })
+    );
   }
 
   formatBattery(lifetime: number) {
     return this._batteryService.formatBattery(lifetime);
   }
-  getSimulation(value: number) {
-    let thing = { ...this.thing };
-    thing.duty = value;
-    this.simulations$[value] = this._drHarvester.startSimulation(thing).pipe(
-      mergeMap((job) => this._drHarvester.getSimulationUntilResult(job.jobId)),
-      filter((simulation) => simulation.result != undefined),
-      map((simulation) => {
-        console.log(simulation.result);
-        return simulation.result?.batlifeh || 0;
-      })
-    );
-  }
-  round(round: number): number {
-    return Math.round(round);
+
+  setLabel(bat: number | undefined) {
+    if (bat === undefined) return;
+
+    if (bat < 0) this.label = `Battery Charge Time`;
+    else this.label = `Battery Discharging Time`;
   }
 
   setLifetime(value: number | null) {
-    if (!value) return;
+    if (value === null) return;
     this.duty = value;
+    let thing = { ...this.thing };
+    thing.duty = value;
+    this.lifetime$ = this.getBatteryLifetime(thing);
   }
 
   isButtonDisabled() {

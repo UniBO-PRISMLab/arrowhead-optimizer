@@ -11,12 +11,12 @@
     ></app-duty-slider>
   </div>
   <div class="row content">
-    <mat-list *ngIf="simulations$[duty] | async as lifetime; else loading">
+    <mat-list *ngIf="lifetime$ | async as lifetime; else loading">
       <mat-list-item>
         <div mat-line style="font-size: 1.5rem; margin-bottom: 10px">
           {{ formatBattery(lifetime) | formatSeconds }}
         </div>
-        <div mat-line>Battery Lifetime</div>
+        <div mat-line>{{ this.label }}</div>
       </mat-list-item>
     </mat-list>
   </div>

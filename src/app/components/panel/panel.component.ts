@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { delay, map, Observable, tap } from 'rxjs';
+import { delay, map, Observable, of, tap } from 'rxjs';
 import { IDrHarvesterInput } from 'src/app/model/dr-harvester/dr-harvester-input.model';
 import { ThingsService } from 'src/app/services/things.service';
+import { BatteryService } from 'src/app/services/battery.service';
+
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -17,7 +19,10 @@ export class PanelComponent implements OnInit {
     description: string;
     data$: Observable<IDrHarvesterInput>;
   }[];
-  constructor(private _thingService: ThingsService) {}
+  constructor(
+    private _thingService: ThingsService,
+    private _batteryService: BatteryService
+  ) {}
 
   ngOnInit(): void {
     this.things = this.servicesNames.map((serviceName) => {
@@ -25,12 +30,10 @@ export class PanelComponent implements OnInit {
         name: this.descriptions[serviceName].name,
         description: this.descriptions[serviceName].description,
         data$: this._thingService.getThings(serviceName).pipe(
-          tap((service) => console.log(service))
-          /*           map((things) => {
-            //todo: this is only for tests
-            things.batV = 2.55;
+          map((things) => {
+            things.batV = this._batteryService.getCloserBatV(things.batV);
             return things;
-          }) */
+          })
         ),
       };
     });
@@ -39,15 +42,12 @@ export class PanelComponent implements OnInit {
   updateThing(serviceName: string) {
     for (let thing of this.things)
       if (thing.name === this.descriptions[serviceName].name)
-        thing.data$ = this._thingService
-          .getThings(serviceName, false)
-          .pipe
-          /*           delay(5000),
+        thing.data$ = this._thingService.getThings(serviceName, false).pipe(
+          delay(1000),
           map((things) => {
-            //todo: this is only for tests
-            things.batV = 2.55;
+            things.batV = this._batteryService.getCloserBatV(things.batV);
             return things;
-          }) */
-          ();
+          })
+        );
   }
 }

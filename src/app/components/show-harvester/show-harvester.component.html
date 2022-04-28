@@ -4,6 +4,15 @@
   </mat-card-header>
 
   <mat-card-content class="content">
-      <span [class]="setIconClass(harvesterType)">{{ this.setHarvester(harvesterType) }}</span>
+    <div>
+      <span
+        class="icon"
+        [matTooltip]="description"
+        matTooltipPosition="above"
+        [class]="setIconClass(harvesterType)"
+        >{{ this.setHarvester(harvesterType) }}</span
+      >
+    </div>
+
   </mat-card-content>
 </mat-card>

@@ -35,6 +35,17 @@ export class DrHarvesterInput implements IDrHarvesterInput {
   thGrad = null;
   vibAcc = null;
   vibFreq = null;
+
+  constructor(input: IDrHarvesterInput) {
+    this.devId = input.devId;
+    this.harvId = input.harvId;
+    this.lowpwrI = input.lowpwrI;
+    this.activeI = input.activeI;
+    this.Vload = input.Vload;
+    this.batV = input.batV;
+    this.phIrr = input.phIrr;
+    this.duty = input.duty;
+  }
 }
 
 export enum DrHarvesterSelector {

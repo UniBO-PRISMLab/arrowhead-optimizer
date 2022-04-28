@@ -10,18 +10,18 @@ export const environment = {
   paths: {
     gassensor: {
       name: 'Gas Sensor',
-      description: 'comercial gas sensor',
+      description: 'Comercial Gas Sensor',
       havesterInput: 'gas-sensor-harvester-info',
       changeDuty: 'gas-sensor-dutycycle',
       duty: {
         min: 10,
-        max: 33,
+        max: 50,
         step: 1,
       },
     },
     thingshub: {
       name: 'SHM Sensors',
-      description: 'sensors monitoring the structural health of a bridge',
+      description: 'Sensors Monitoring the Structural Health of a Bridge',
       havesterInput: 'status',
       changeDuty: 'dutyCycle',
     },

@@ -8,8 +8,12 @@ import {
   repeat,
   retry,
   take,
+  tap,
 } from 'rxjs';
-import { IDrHarvesterInput } from '../model/dr-harvester/dr-harvester-input.model';
+import {
+  DrHarvesterInput,
+  IDrHarvesterInput,
+} from '../model/dr-harvester/dr-harvester-input.model';
 import {
   IDrHarvesterJob,
   IDrHarvesterOutput,
@@ -41,19 +45,27 @@ export class DrHarvesterService extends HttpHandler {
     this._url = url;
   }
   startSimulation(input: IDrHarvesterInput): Observable<IDrHarvesterJob> {
+    const simulationInput = new DrHarvesterInput(input);
+    console.log('start ' + input.duty);
     return this.harvesterService$.pipe(
-      mergeMap((service) =>
-        this.http
+      mergeMap((service) => {
+        console.log(simulationInput);
+        return this.http
           .post<IDrHarvesterJob>(
             `${service.provider.address}:${service.provider.port}/harvester/simulation`,
-            input
+            simulationInput
           )
-          .pipe(retry(3), catchError(this.handleError))
-      )
+          .pipe(
+            tap((data) => console.log(data)),
+            retry(3),
+            catchError(this.handleError)
+          );
+      })
     );
   }
 
   getSimulation(simulationId: string): Observable<IDrHarvesterOutput> {
+    console.log(simulationId);
     let simulation$ = this._drHarvesterCache.getValue(simulationId);
     if (!simulation$) {
       simulation$ = this.harvesterService$.pipe(

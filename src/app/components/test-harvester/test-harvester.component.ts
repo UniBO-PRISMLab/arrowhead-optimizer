@@ -15,7 +15,7 @@ import { environment } from 'src/environments/environment';
 })
 export class TestHarvesterComponent implements OnInit {
   public simulations: ISimulation[] = [];
-  public drHarvesterInput: DrHarvesterInput = new DrHarvesterInput();
+  public drHarvesterInput!: DrHarvesterInput;// = new DrHarvesterInput();
   public poolingTime: number = environment.poolingTime;
   @Output() error = new EventEmitter<Error>();
   @Output('simulation') result = new EventEmitter<IDrHarvesterOutput>();
@@ -24,17 +24,17 @@ export class TestHarvesterComponent implements OnInit {
   constructor(private _drHarvesterService: DrHarvesterService) {}
 
   public startSimulation() {
-    this.simulations.push({
+    /* this.simulations.push({
       job$: this._drHarvesterService.startSimulation(new DrHarvesterInput()),
       input: new DrHarvesterInput(),
-    });
+    }); */
   }
 
   public restartSimulation(index: number = 0) {
-    this.simulations[index] = {
+/*     this.simulations[index] = {
       job$: this._drHarvesterService.startSimulation(new DrHarvesterInput()),
       input: new DrHarvesterInput(),
-    };
+    }; */
   }
   ngOnInit(): void {}
 

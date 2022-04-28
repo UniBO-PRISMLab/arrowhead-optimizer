@@ -18,6 +18,7 @@ export class BatteryService {
     '3.5': 0.7,
     '3.62': 0.8,
     '3.75': 0.85,
+    '3.97':0.9,
     '4.1': 1,
   };
 
@@ -41,10 +42,15 @@ export class BatteryService {
     return seconds * (0.1 + (1 - duty / 100));
   }
 
-  convertVToPercent(batteryVload: number): any {
+
+  getCloserBatV(batV: number): number {
     const tension = this.tensionValues.reduce((a, b) => {
-      return Math.abs(b - batteryVload) < Math.abs(a - batteryVload) ? b : a;
+      return Math.abs(b - batV) < Math.abs(a - batV) ? b : a;
     });
+    return tension;
+  }
+  convertVToPercent(batteryVload: number): any {
+    const tension = this.getCloserBatV(batteryVload);
     return this.conversion[tension];
   }
 }

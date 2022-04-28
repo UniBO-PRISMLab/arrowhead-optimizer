@@ -14,6 +14,8 @@ export class ShowBatteryComponent implements OnInit {
   charge: number = NaN;
   hours: number = NaN;
   batteryLifetime: number = NaN;
+  batteryChargeTime: number = NaN;
+
   isLoading = true;
   show = false;
   battery!: BatteryType;
@@ -47,8 +49,11 @@ export class ShowBatteryComponent implements OnInit {
     let subscription = this._drHarvester
       .getSimulationUntilResult(job.jobId)
       .subscribe((simulation): void => {
-        if (simulation.result?.batlifeh)
+        if (simulation.result?.batlifeh){
           this.batteryLifetime = simulation.result?.batlifeh;
+          this.batteryChargeTime = simulation.result?.tChargeh;
+
+        }
         this.isLoading = false;
         subscription.unsubscribe();
       });

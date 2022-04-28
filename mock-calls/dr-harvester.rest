@@ -152,3 +152,46 @@ Content-Type: application/json
 #### 489
 DELETE http://137.204.57.93:8443/serviceregistry/mgmt/systems/900
 Accept: application/json
+
+
+### create remote Emeritus Harvester arrowhead service
+POST http://137.204.57.93:8443/serviceregistry/register
+Content-Type: application/json
+
+{
+   "endOfValidity":"2031-01-01 23:59:59",
+   "interfaces":[
+      "HTTPS-SECURE-JSON"
+   ],
+   "providerSystem":{
+      "address":"http://137.204.40.174",
+      "port": 3001,
+      "systemName":"thingshubremote"
+   },
+   "secure":"NOT_SECURE",
+   "serviceDefinition":"thingshubremote",
+   "serviceUri":"status",
+   "version":0
+}
+### create remote Emeritus Harvester arrowhead service
+POST http://137.204.57.93:8443/serviceregistry/register
+Content-Type: application/json
+
+{
+   "endOfValidity":"2031-01-01 23:59:59",
+   "interfaces":[
+      "HTTPS-SECURE-JSON"
+   ],
+   "providerSystem":{
+      "address":"http://ed25-2001-b07-644f-3494-e4dc-e422-decf-c522.ngrok.io",
+      "port": 80,
+      "systemName":"thingshublolo"
+   },
+   "secure":"NOT_SECURE",
+   "serviceDefinition":"thingshublolo",
+   "serviceUri":"status",
+   "version":0
+}
+
+
+

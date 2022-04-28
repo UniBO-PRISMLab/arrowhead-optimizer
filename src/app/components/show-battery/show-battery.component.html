@@ -27,16 +27,14 @@
           ></app-timer>
         </div>
         <ng-template #batteryUnknown>
-          <span
-            matTooltip="Simulation couldn't define the battery lifetime"
-            matTooltipPosition="above"
+          <app-timer
             [style.color]="battery.color"
-            class="power"
-            >Unknown</span
-          >
+            [seconds]="false"
+            [time]="formatBattery(batteryChargeTime)"
+          ></app-timer>
         </ng-template>
       </ng-template>
     </div>
-    Battery Lifetime
+    {{ batteryLifetime >= 0 ? "Discharging Time" : "Charging Time" }}
   </mat-card-content>
 </mat-card>
