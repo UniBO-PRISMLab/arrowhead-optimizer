@@ -26,6 +26,7 @@ import { PercentageSpinnerComponent } from './components/percentage-spinner/perc
 import { PanelComponent } from './components/panel/panel.component';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { DutySliderComponent } from './components/duty-slider/duty-slider.component';
+import { ChooseHarvesterComponent } from './components/choose-harvester/choose-harvester.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { DutySliderComponent } from './components/duty-slider/duty-slider.compon
     PanelComponent,
     ConfirmDialogComponent,
     DutySliderComponent,
+    ChooseHarvesterComponent,
   ],
   imports: [
     BrowserModule,

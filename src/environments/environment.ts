@@ -41,6 +41,7 @@ export const environment = {
   },
   poolingTime: 15,
   fakeLifetime: false,
+  showRadioButton: false,
 };
 
 /*

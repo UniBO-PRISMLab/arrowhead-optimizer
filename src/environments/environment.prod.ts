@@ -30,7 +30,6 @@ export const environment = {
         step: 10,
       },
     },
-
   },
   cache: {
     durationInMinutes: 5,
@@ -38,4 +37,5 @@ export const environment = {
   },
   poolingTime: 15,
   fakeLifetime: false,
+  showRadioButton: false,
 };

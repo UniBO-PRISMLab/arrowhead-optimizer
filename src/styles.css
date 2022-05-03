@@ -8,18 +8,6 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif; /* background-color: #343434 */
    background:  #121212;
-  /* background: #0F2027;
-  background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);
-  background: linear-gradient(to right, #2C5364, #203A43, #0F2027);
-
- */
-
-
-  /* rgb(0,31,83);
-
-
-
-background: linear-gradient(135deg, rgba(0,31,83,1) 0%, rgba(11,62,147,1) 17%, rgba(0,212,255,1) 100%); */
 }
 
 .basic-container {
@@ -52,13 +40,5 @@ background: linear-gradient(135deg, rgba(0,31,83,1) 0%, rgba(11,62,147,1) 17%, r
   border-image-width: initial;
   border-image-outset: initial;
   border-image-repeat: initial;
-}
-
-.mat-slider-track-fill,
-.mat-slider-wrapper,
-.mat-slider-track-wrapper,
-.mat-slider-track-background {
-  height: 10px !important;
-  border-radius: 10px;
 }
 

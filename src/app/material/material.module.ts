@@ -13,8 +13,12 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatRadioModule } from '@angular/material/radio';
 
 const material = [
+  MatRadioModule,
+  MatSlideToggleModule,
   MatDialogModule,
   MatButtonModule,
   MatMenuModule,
