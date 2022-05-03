@@ -14,7 +14,7 @@ export class ChooseHarvesterComponent implements OnInit {
   @Output() changeHarvester = new EventEmitter<string>();
   icon!: string;
   iconClass = 'material-icons';
-  showRadioButton:boolean;
+  showRadioButton: boolean;
   harvesters: { description: string; id: string }[] = [
     { description: 'Small Solar Panel', id: 'SolarLightLoad' },
     { description: 'Big Solar Panel', id: 'SolarHeavyLoad' },
@@ -35,8 +35,11 @@ export class ChooseHarvesterComponent implements OnInit {
     else this.iconClass = 'material-icons';
   }
   updateIrradiance(newValue: number | null) {
-    if (newValue === null) return;
-    this.changeIrradiance.emit(newValue);
+    if (newValue === null) {
+      console.log("NULL");
+      this.changeIrradiance.emit(0);
+    }
+    this.changeIrradiance.emit(newValue || 0);
   }
 
   fromDescriptionToID(description: string) {

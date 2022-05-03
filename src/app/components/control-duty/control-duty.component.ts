@@ -97,7 +97,7 @@ export class ControlDutyComponent implements OnInit {
   }
 
   setLifetime(value: number | null, irradiance?: number) {
-    if (irradiance) this.irradiance = irradiance;
+    if (irradiance != undefined) this.irradiance = irradiance;
     if (value === null) return;
     this.duty = value;
     let thing = { ...this.thing };
