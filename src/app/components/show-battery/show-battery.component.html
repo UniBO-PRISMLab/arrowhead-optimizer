@@ -3,38 +3,53 @@
     <mat-card-subtitle>Battery</mat-card-subtitle>
   </mat-card-header>
 
-  <mat-card-content class="content">
-    <span [style.color]="battery.color" class="material-icons parent">{{
-      battery.charge
-    }}</span>
-    <div>
-      <div class="power">{{ charge | percent }}</div>
-      <div *ngIf="isLoading; else timer">
-        <mat-spinner
-          matTooltip="Simulation running..."
-          matTooltipPosition="below"
-          class="custom-spinner"
-          diameter="30"
-          style="margin: 0 auto"
-        ></mat-spinner>
-      </div>
-      <ng-template #timer>
-        <div *ngIf="batteryLifetime >= 0; else batteryUnknown">
-          <app-timer
-            [style.color]="battery.color"
-            [seconds]="false"
-            [time]="formatBattery(batteryLifetime)"
-          ></app-timer>
-        </div>
-        <ng-template #batteryUnknown>
-          <app-timer
-            [style.color]="battery.color"
-            [seconds]="false"
-            [time]="formatBattery(batteryChargeTime)"
-          ></app-timer>
-        </ng-template>
-      </ng-template>
+  <mat-card-content>
+    <span
+      [style.color]="battery.color"
+      class="material-icons parent big-icon"
+      >{{ battery.charge }}</span
+    >
+    <div class="power">{{ charge | percent }}</div>
+    <div *ngIf="isLoading; else timer">
+      <mat-spinner
+        matTooltip="Simulation running..."
+        matTooltipPosition="below"
+        class="custom-spinner"
+        diameter="30"
+        style="margin: 0 auto"
+      ></mat-spinner>
     </div>
-    {{ batteryLifetime >= 0 ? "Discharging Time" : "Charging Time" }}
+    <ng-template #timer>
+      <div class="content">
+        <mat-list>
+          <mat-list-item>
+            <div class="column">
+              <span
+                [matTooltip]="icon.description"
+                matTooltipPosition="above"
+                [style.color]="icon.color"
+                class="icon"
+                class="material-icons parent icon"
+                >{{ icon.code }}</span
+              >
+            </div>
+            <div class="column">
+              <app-timer
+                mat-line
+                style="font-size: 1.4rem; margin-bottom: 10px"
+                [style.color]="battery.color"
+                [seconds]="false"
+                [time]="
+                  batteryLifetime >= 0
+                    ? formatBattery(batteryLifetime)
+                    : formatBattery(batteryChargeTime)
+                "
+              ></app-timer>
+              <div mat-line>{{ this.label }}</div>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </ng-template>
   </mat-card-content>
 </mat-card>

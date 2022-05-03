@@ -5,12 +5,12 @@ export const environment = {
     port: 8443,
     harvester: 'emeritus-harvester-remote',
     networkWT: 'network-web-thing',
-    services: ['gassensor', 'thingshub'],
+    services: ['gassensor', 'thingshubremote'],
   },
   paths: {
     gassensor: {
       name: 'Gas Sensor',
-      description: 'Comercial Gas Sensor',
+      description: 'ST Gas Sensor',
       havesterInput: 'gas-sensor-harvester-info',
       changeDuty: 'gas-sensor-dutycycle',
       duty: {
@@ -19,12 +19,18 @@ export const environment = {
         step: 1,
       },
     },
-    thingshub: {
+    thingshubremote: {
       name: 'SHM Sensors',
       description: 'Sensors Monitoring the Structural Health of a Bridge',
       havesterInput: 'status',
       changeDuty: 'dutyCycle',
+      duty: {
+        min: 0,
+        max: 100,
+        step: 10,
+      },
     },
+
   },
   cache: {
     durationInMinutes: 5,

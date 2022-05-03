@@ -5,7 +5,7 @@
   box-sizing: border-box;
 }
 
-.material-icons {
+.big-icon {
   font-size: 120px;
 }
 
@@ -13,7 +13,6 @@ app-timer {
   font-weight: 500;
   font-size: 20px;
 }
-
 
 :host ::ng-deep .custom-spinner circle {
   stroke: rgb(102 220 255);
@@ -24,4 +23,19 @@ app-timer {
   font-weight: 500;
   font-size: 1.5rem;
   line-height: 2;
+}
+.content {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 80%;
+}
+
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  margin: 5px;
 }

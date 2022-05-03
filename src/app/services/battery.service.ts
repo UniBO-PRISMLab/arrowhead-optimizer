@@ -29,8 +29,8 @@ export class BatteryService {
       this.tensionValues.push(key as unknown as number);
   }
 
-  formatBattery(hours: number, duty?: number): string | number {
-    if (hours < 0) return 'Unknown';
+  formatBattery(hours: number, duty?: number): number {
+    if (hours < 0) return -1;
 
     let batteryLifetime = Math.round(hours * 3600);
     if (environment.fakeLifetime)

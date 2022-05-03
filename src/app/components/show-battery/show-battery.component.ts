@@ -10,14 +10,16 @@ import { DrHarvesterService } from 'src/app/services/dr-harvester.service';
   styleUrls: ['./show-battery.component.css'],
 })
 export class ShowBatteryComponent implements OnInit {
-  //TODO ajust to correct time frame
   charge: number = NaN;
-  hours: number = NaN;
   batteryLifetime: number = NaN;
   batteryChargeTime: number = NaN;
-
+  label: string = `Discharging Time`;
+  icon = {
+    code: 'arrow_upward',
+    description: 'Battery Charging',
+    color: '#69f0ae',
+  };
   isLoading = true;
-  show = false;
   battery!: BatteryType;
 
   @Input() thing!: IDrHarvesterInput;
@@ -32,10 +34,9 @@ export class ShowBatteryComponent implements OnInit {
   }
 
   formatBattery(lifetime: number) {
-    let battery = this._batteryService.formatBattery(lifetime);
-    if (typeof battery === 'string') return 0;
-    return battery;
+    return this._batteryService.formatBattery(lifetime);
   }
+
   initSimulation(thing: IDrHarvesterInput) {
     let subscription = this._drHarvester
       .startSimulation(thing)
@@ -45,14 +46,34 @@ export class ShowBatteryComponent implements OnInit {
       });
   }
 
+  setLabel(bat: number | undefined) {
+    if (bat === undefined) return;
+
+    if (bat >= 0) {
+      this.icon = {
+        code: 'arrow_downward',
+        color: '#ffc800',
+        description: 'Battery Discharging',
+      };
+      this.label = `Battery Discharging Time`;
+    } else {
+      this.icon = {
+        code: 'arrow_upward',
+        description: 'Battery Charging',
+        color: '#69f0ae',
+      };
+      this.label = `Battery Charging Time`;
+    }
+  }
+
   setSimulationResult(job: IDrHarvesterJob) {
     let subscription = this._drHarvester
       .getSimulationUntilResult(job.jobId)
       .subscribe((simulation): void => {
-        if (simulation.result?.batlifeh){
+        if (simulation.result?.batlifeh) {
+          this.setLabel(simulation.result?.batlifeh);
           this.batteryLifetime = simulation.result?.batlifeh;
           this.batteryChargeTime = simulation.result?.tChargeh;
-
         }
         this.isLoading = false;
         subscription.unsubscribe();

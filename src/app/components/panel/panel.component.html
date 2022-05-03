@@ -4,7 +4,7 @@
       <mat-expansion-panel-header>
         <mat-panel-title> {{ thing.name }} </mat-panel-title>
         <mat-panel-description>
-          {{ thing.description }}
+          {{ thing.description | titlecase }}
         </mat-panel-description>
       </mat-expansion-panel-header>
       <div *ngIf="thing.data$ | async as data; else loading">

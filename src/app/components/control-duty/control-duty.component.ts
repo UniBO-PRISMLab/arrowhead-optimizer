@@ -21,7 +21,11 @@ export class ControlDutyComponent implements OnInit {
   public initialDuty!: number;
   deviceParticularities: { [key: string]: any } = environment.paths;
   label: string = `Discharging Time`;
-
+  icon = {
+    code: 'arrow_upward',
+    description: 'Battery Charging',
+    color: '#69f0ae',
+  };
   max: number = 100;
   min: number = 5;
   step: number = 5;
@@ -67,8 +71,21 @@ export class ControlDutyComponent implements OnInit {
   setLabel(bat: number | undefined) {
     if (bat === undefined) return;
 
-    if (bat < 0) this.label = `Battery Charge Time`;
-    else this.label = `Battery Discharging Time`;
+    if (bat >= 0) {
+      this.icon = {
+        code: 'arrow_downward',
+        color: '#ffc800',
+        description: 'Battery Discharging',
+      };
+      this.label = `Battery Discharging Time`;
+    } else {
+      this.icon = {
+        code: 'arrow_upward',
+        description: 'Battery Charging',
+        color: '#69f0ae',
+      };
+      this.label = `Battery Charging Time`;
+    }
   }
 
   setLifetime(value: number | null) {

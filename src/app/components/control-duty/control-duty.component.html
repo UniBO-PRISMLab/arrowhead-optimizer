@@ -13,10 +13,22 @@
   <div class="row content">
     <mat-list *ngIf="lifetime$ | async as lifetime; else loading">
       <mat-list-item>
-        <div mat-line style="font-size: 1.5rem; margin-bottom: 10px">
-          {{ formatBattery(lifetime) | formatSeconds }}
+        <div class="column">
+          <span
+            [matTooltip]="icon.description"
+            matTooltipPosition="above"
+            [style.color]="icon.color"
+            class="icon"
+            class="material-icons parent icon"
+            >{{ icon.code }}</span
+          >
         </div>
-        <div mat-line>{{ this.label }}</div>
+        <div class="column">
+          <div mat-line style="font-size: 1.5rem; margin-bottom: 10px">
+            {{ formatBattery(lifetime) | formatSeconds }}
+          </div>
+          <div mat-line>{{ this.label }}</div>
+        </div>
       </mat-list-item>
     </mat-list>
   </div>
