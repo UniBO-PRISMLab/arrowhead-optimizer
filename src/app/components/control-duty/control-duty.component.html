@@ -10,6 +10,16 @@
       (changeDuty)="setLifetime($event)"
     ></app-duty-slider>
   </div>
+  <div *ngIf="showHarvester">
+    <app-choose-harvester
+      class="row content"
+      [irradiance]="thing.phIrr"
+      [harvester]="thing.harvId"
+      (changeIrradiance)="setLifetime(duty, $event)"
+      (changeHarvester)="setHarvester($event)"
+    ></app-choose-harvester>
+  </div>
+
   <div class="row content">
     <mat-list *ngIf="lifetime$ | async as lifetime; else loading">
       <mat-list-item>
@@ -27,7 +37,7 @@
           <div mat-line style="font-size: 1.5rem; margin-bottom: 10px">
             {{ formatBattery(lifetime) | formatSeconds }}
           </div>
-          <div mat-line>{{ this.label }}</div>
+          <div mat-line class="center-label">{{ this.label }}</div>
         </div>
       </mat-list-item>
     </mat-list>
@@ -43,18 +53,22 @@
   </ng-template>
 
   <div class="row">
-    <div
-      matTooltip="duty value is the same as the current one"
-      [matTooltipDisabled]="!isButtonDisabled()"
-    >
-      <button
-        (click)="changeDuty()"
-        [disabled]="isButtonDisabled()"
-        mat-raised-button
-        color="accent"
+    <div class="column">
+      <mat-slide-toggle (change)="toggleHarvester($event.checked)"
+        >Harvester Experimentation</mat-slide-toggle
       >
-        Update Sensors
-      </button>
+    </div>
+    <div class="column" style="text-align: end">
+      <div>
+        <button
+          (click)="changeDuty()"
+          [disabled]="isButtonDisabled()"
+          mat-raised-button
+          color="accent"
+        >
+          Update Sensors
+        </button>
+      </div>
     </div>
   </div>
 </mat-card>

@@ -7,6 +7,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ShowHarvesterComponent implements OnInit {
   @Input('type') harvesterType: string = '';
+  @Input() irradiance!: number;
+
   description:string = '';
   constructor() {}
 

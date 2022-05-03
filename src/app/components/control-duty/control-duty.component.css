@@ -3,10 +3,9 @@
 }
 .card {
   width: 100%;
-  margin: 10px;
+  margin: 5px;
   box-sizing: border-box;
   text-align: center;
-
 }
 
 .icon {
@@ -32,6 +31,7 @@
   width: 100%;
   gap: 10px;
   margin: 10px;
+  justify-content: space-around;
 }
 
 .column {
@@ -39,16 +39,13 @@
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
-  margin: 10px;
+  margin-right: 10px;
+  justify-content: center;
 }
 .component {
   justify-content: center;
   align-items: center;
-
 }
 :host ::ng-deep .custom-spinner circle {
   stroke: rgb(102 220 255);
-
-
 }
-

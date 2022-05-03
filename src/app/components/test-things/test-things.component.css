@@ -22,8 +22,11 @@
 }
 .component {
   height: 95%;
-  width: 95%;
-  margin: 5px;
+  width: 100%;
+}
+
+.center-label{
+  text-align: center;
 }
 
 mat-slider {

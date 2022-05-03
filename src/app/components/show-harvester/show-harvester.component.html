@@ -3,16 +3,36 @@
     <mat-card-subtitle>Harvester</mat-card-subtitle>
   </mat-card-header>
 
-  <mat-card-content class="content">
-    <div>
-      <span
-        class="icon"
-        [matTooltip]="description"
-        matTooltipPosition="above"
-        [class]="setIconClass(harvesterType)"
-        >{{ this.setHarvester(harvesterType) }}</span
-      >
+  <mat-card-content>
+    <span
+      class="material-icons parent icon row"
+      [matTooltip]="description"
+      matTooltipPosition="above"
+      [class]="setIconClass(harvesterType)"
+      >{{ this.setHarvester(harvesterType) }}</span
+    >
+    <div
+      matTooltip="Solar Irradiance from 0 to 1000 W/m&#178;"
+      matTooltipPosition="above"
+      class="content"
+    >
+      <mat-icon class="small-icon">brightness_low</mat-icon>
+      <mat-slider
+        max="1000"
+        min="0"
+        step="50"
+        [value]="irradiance"
+        disabled
+        thumbLabel
+      ></mat-slider>
+      <mat-icon class="small-icon">brightness_high</mat-icon>
     </div>
 
+    <div class="display-text">
+      <span mat-line class="display-irradiance"
+        >{{ irradiance }} W/m&#178;
+      </span>
+      <div mat-line>Solar Irradiance</div>
+    </div>
   </mat-card-content>
 </mat-card>

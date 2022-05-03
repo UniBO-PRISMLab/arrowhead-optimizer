@@ -1,0 +1,50 @@
+<div *ngIf="this.showRadioButton" class="center-align">
+  <div class="display-text">
+    <label id="example-radio-group-label">Choose Harvester</label>
+    <mat-radio-group
+      aria-labelledby="example-radio-group-label"
+      class="example-radio-group"
+      [value]="chosedHarvester.description"
+      (change)="updateHarvester($event.value)"
+    >
+      <mat-radio-button
+        class="example-radio-button"
+        *ngFor="let harvester of harvesters"
+        [value]="harvester.description"
+      >
+        {{ harvester.description }}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>
+
+<span
+  class="material-icons parent harvester-icon"
+  matTooltipPosition="above"
+  [class]="iconClass"
+  >{{ this.icon }}</span
+>
+
+<div
+  matTooltip="Solar Irradiance from 0 to 1000 W/m&#178;"
+  matTooltipPosition="above"
+  class="content"
+>
+  <mat-icon class="small-icon">brightness_low</mat-icon>
+  <mat-slider
+    max="1000"
+    min="0"
+    step="50"
+    [(value)]="irradiance"
+    (change)="this.updateIrradiance($event.value)"
+    thumbLabel
+  ></mat-slider>
+  <mat-icon class="small-icon">brightness_high</mat-icon>
+</div>
+
+<div class="center-align">
+  <div class="display-text">
+    <span mat-line class="display-irradiance">{{ irradiance }} W/m&#178; </span>
+    <div mat-line>Solar Irradiance</div>
+  </div>
+</div>

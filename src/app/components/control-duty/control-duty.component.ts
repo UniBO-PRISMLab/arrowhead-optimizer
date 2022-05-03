@@ -30,7 +30,9 @@ export class ControlDutyComponent implements OnInit {
   min: number = 5;
   step: number = 5;
   lifetime$!: Observable<number>;
-
+  showHarvester = false;
+  harvester!: string;
+  irradiance!: number;
   constructor(
     private _drHarvester: DrHarvesterService,
     private _thingService: ThingsService,
@@ -38,9 +40,11 @@ export class ControlDutyComponent implements OnInit {
     public dialog: MatDialog
   ) {}
   ngOnInit(): void {
+    // this.irradiance = this.thing.phIrr;
     this.duty = this.thing.duty;
+    this.irradiance = this.thing.phIrr;
     this.initialDuty = this.duty;
-
+    this.harvester = this.thing.harvId;
     if (this.thing.id && this.deviceParticularities[this.thing.id].duty) {
       let type = this.thing.id;
       this.max = this.deviceParticularities[type].duty.max;
@@ -87,17 +91,31 @@ export class ControlDutyComponent implements OnInit {
       this.label = `Battery Charging Time`;
     }
   }
+  setHarvester(harvester: string) {
+    this.harvester = harvester;
+    this.setLifetime(this.duty);
+  }
 
-  setLifetime(value: number | null) {
+  setLifetime(value: number | null, irradiance?: number) {
+    if (irradiance) this.irradiance = irradiance;
     if (value === null) return;
     this.duty = value;
     let thing = { ...this.thing };
     thing.duty = value;
+    thing.phIrr = this.irradiance;
+    thing.harvId = this.harvester;
+    console.log(this.harvester);
     this.lifetime$ = this.getBatteryLifetime(thing);
   }
 
+  toggleHarvester(show: boolean) {
+    this.setLifetime(this.duty, this.thing.phIrr)
+    this.showHarvester = show;
+  }
+
+
   isButtonDisabled() {
-    return this.duty == this.initialDuty;
+    return this.duty == this.initialDuty || this.showHarvester;
   }
   changeDuty() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {

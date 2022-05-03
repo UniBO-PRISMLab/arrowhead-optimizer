@@ -2,3 +2,26 @@ mat-slider {
   width: 100%;
   cursor: pointer;
 }
+
+:host ::ng-deep .mat-slider-track-fill {
+  height: 10px !important;
+  border-radius: 10px;
+}
+:host ::ng-deep .mat-slider-wrapper {
+  height: 10px !important;
+  border-radius: 10px;
+}
+:host ::ng-deep .mat-slider-track-wrapper {
+  height: 10px !important;
+  border-radius: 10px;
+}
+:host ::ng-deep .mat-slider-track-background {
+  height: 10px !important;
+  border-radius: 10px;
+}
+
+:host ::ng-deep .mat-slider-thumb {
+  width: 30px;
+  height: 30px;
+  bottom: -15px;
+}
