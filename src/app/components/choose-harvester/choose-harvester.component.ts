@@ -35,10 +35,8 @@ export class ChooseHarvesterComponent implements OnInit {
     else this.iconClass = 'material-icons';
   }
   updateIrradiance(newValue: number | null) {
-    if (newValue === null) {
-      console.log("NULL");
-      this.changeIrradiance.emit(0);
-    }
+    if (newValue === null) this.changeIrradiance.emit(0);
+
     this.changeIrradiance.emit(newValue || 0);
   }
 
