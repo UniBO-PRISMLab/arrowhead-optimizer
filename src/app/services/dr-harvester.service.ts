@@ -46,13 +46,12 @@ export class DrHarvesterService extends HttpHandler {
   }
   startSimulation(input: IDrHarvesterInput): Observable<IDrHarvesterJob> {
     const simulationInput = new DrHarvesterInput(input);
-    console.log('start ' + input.duty);
     return this.harvesterService$.pipe(
       mergeMap((service) => {
         console.log(simulationInput);
         return this.http
           .post<IDrHarvesterJob>(
-            `${service.provider.address}:${service.provider.port}/harvester/simulation`,
+            `http://${service.provider.address}:${service.provider.port}/harvester/simulation`,
             simulationInput
           )
           .pipe(
@@ -72,7 +71,7 @@ export class DrHarvesterService extends HttpHandler {
         mergeMap((service) =>
           this.http
             .get<IDrHarvesterOutput>(
-              `${service.provider.address}:${service.provider.port}/harvester/simulation/${simulationId}`
+              `http://${service.provider.address}:${service.provider.port}/harvester/simulation/${simulationId}`
             )
             .pipe(retry(3), catchError(this.handleError))
         )

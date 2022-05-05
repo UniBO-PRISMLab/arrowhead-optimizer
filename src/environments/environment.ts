@@ -5,27 +5,27 @@
 export const environment = {
   production: false,
   arrowhead: {
-    host: 'http://137.204.57.93',
+    host: 'http://192.168.1.5',//'http://137.204.57.93',
     port: 8443,
-    harvester: 'emeritus-harvester-remote',
+    harvester: 'emeritus-harvester',
     networkWT: 'network-web-thing',
     services: ['thingshub', 'gassensor'],
   },
   paths: {
     gassensor: {
       name: 'Gas Sensor',
-      description: 'comercial gas sensor',
+      description: 'ST Gas Sensor',
       havesterInput: 'gas-sensor-harvester-info',
       changeDuty: 'gas-sensor-dutycycle',
       duty: {
         min: 10,
-        max: 50,
+        max: 40,
         step: 1,
       },
     },
     thingshub: {
       name: 'SHM Sensors',
-      description: 'sensors monitoring the structural health of a bridge',
+      description: 'Sensors Monitoring a Bridge',
       havesterInput: 'status',
       changeDuty: 'dutyCycle',
       duty: {

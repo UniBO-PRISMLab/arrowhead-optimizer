@@ -66,7 +66,7 @@ GET http://137.204.57.93:8443/serviceregistry/mgmt/2091
 ###
 DELETE http://137.204.57.93:8443/serviceregistry/mgmt/3061
 Accept: application/json
-
+https://iotime-2022.github.io/
 
 ### create Emeritus Harvester arrowhead service
 POST http://137.204.57.93:8443/serviceregistry/register
@@ -155,21 +155,21 @@ Accept: application/json
 
 
 ### create remote Emeritus Harvester arrowhead service
-POST http://137.204.57.93:8443/serviceregistry/register
+POST http://192.168.1.5:8443/serviceregistry/register
 Content-Type: application/json
 
 {
-   "endOfValidity":"2031-01-01 23:59:59",
+   "endOfValidity":"2031-01-01T23:59:59+01:00",
    "interfaces":[
       "HTTPS-SECURE-JSON"
    ],
    "providerSystem":{
-      "address":"http://137.204.40.174",
+      "address":"137.204.40.174",
       "port": 3001,
-      "systemName":"thingshubremote"
+      "systemName":"test"
    },
    "secure":"NOT_SECURE",
-   "serviceDefinition":"thingshubremote",
+   "serviceDefinition":"test",
    "serviceUri":"status",
    "version":0
 }
@@ -194,4 +194,63 @@ Content-Type: application/json
 }
 
 
+### create remote Emeritus Harvester arrowhead service
+POST http://192.168.1.5:8443/serviceregistry/register
+Content-Type: application/json
 
+{
+   "endOfValidity":"2031-01-01T23:59:59+01:00",
+   "interfaces":[
+      "HTTPS-SECURE-JSON"
+   ],
+   "providerSystem":{
+      "address":"192.168.1.9",
+      "port": 3001,
+      "systemName":"thingshub"
+   },
+   "secure":"NOT_SECURE",
+   "serviceDefinition":"thingshub",
+   "serviceUri":"status",
+   "version":0
+}
+
+
+### create Emeritus Harvester arrowhead service
+POST http://192.168.1.5:8443/serviceregistry/register
+Content-Type: application/json
+
+{
+   "endOfValidity":"2031-01-01T23:59:59+01:00",
+   "interfaces":[
+      "HTTPS-SECURE-JSON"
+   ],
+   "providerSystem":{
+      "address":"localhost",
+      "port": 2022,
+      "systemName":"emeritus-harvester"
+   },
+   "secure":"NOT_SECURE",
+   "serviceDefinition":"emeritus-harvester",
+   "serviceUri":"harvester",
+   "version":0
+}
+
+### create Emeritus Harvester arrowhead service
+POST http://192.168.1.5:8443/serviceregistry/register
+Content-Type: application/json
+
+{
+   "endOfValidity":"2031-01-01T23:59:59+01:00",
+   "interfaces":[
+      "HTTPS-SECURE-JSON"
+   ],
+   "providerSystem":{
+      "address":"192.168.1.5",
+      "port": 4308,
+      "systemName":"GasSensor"
+   },
+   "secure":"NOT_SECURE",
+   "serviceDefinition":"GasSensor",
+   "serviceUri":"gas-sensor-harvester-info",
+   "version":0
+}

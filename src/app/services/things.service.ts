@@ -38,7 +38,7 @@ export class ThingsService extends HttpHandler {
           const name = service.provider.systemName;
           return {
             id: name,
-            url: `${service.provider.address}:${service.provider.port}`,
+            url: `http://${service.provider.address}:${service.provider.port}`,
             path: this.paths[name],
           };
         })
